@@ -82,6 +82,7 @@ int LightControl(int &lightCTRL){
 }
 
 void PopulateLocNodes(){
+  
   float cx = -150;
   float cy = -250;
 
@@ -96,29 +97,6 @@ void PopulateLocNodes(){
   }
 }
 
-void drawAxis()
-{
-     glLineWidth(3.0);
-     //X axis in red
-     glColor3f(1.0f,0.0f,0.0f);
-     glBegin(GL_LINES);
-       glVertex3f(X_MIN,0.0,0.0);
-       glVertex3f(X_MAX,0.0,0.0);
-     glEnd();
-     //Y axis in green
-     glColor3f(0.0f,1.0f,0.0f);
-     glBegin(GL_LINES);
-       glVertex3f(0.0,Y_MIN,0.0);
-       glVertex3f(0.0,Y_MAX,0.0);
-     glEnd();
-     //Z axis in blue
-     glColor3f(0.0f,0.0f,1.0f);
-     glBegin(GL_LINES);
-       glVertex3f(0.0,0.0,Z_MIN);
-       glVertex3f(0.0,0.0,Z_MAX);
-     glEnd();
-     glLineWidth(1.0);
- }
 
  void drawString(int x, int y, int z, const char* text) {
   glColor3f(1.0f, 1.0f, 1.0f);
@@ -211,17 +189,19 @@ void keyboard(unsigned char key, int x, int y)
     glutPostRedisplay();
 }
 
-int main(int argc, char **argv)
-{
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
-    glutInitWindowPosition(100, 100);
-    glutInitWindowSize(WIDTH, HEIGTH);
-    glutCreateWindow("Cubo 1");
-    init();
-    glutDisplayFunc(display);
-    glutIdleFunc(idle);
-    glutKeyboardFunc(keyboard);
-    glutMainLoop();
-    return 0;
+int main(int argc, char **argv) {
+
+  PopulateLocNodes();
+
+  glutInit(&argc, argv);
+  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
+  glutInitWindowPosition(100, 100);
+  glutInitWindowSize(WIDTH, HEIGTH);
+  glutCreateWindow("Cubo 1");
+  init();
+  glutDisplayFunc(display);
+  glutIdleFunc(idle);
+  glutKeyboardFunc(keyboard);
+  glutMainLoop();
+  return 0;
 }
