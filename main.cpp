@@ -41,9 +41,11 @@ int DimBoard_X = 300;
 int DimBoard_Z = 450;
 int Lightcolor=0;
 int LightCTRL=0;
-const int NUMNODES = 24;
+const int NUMNODES = 12;
 // Localizacion de los nodos
 float LocNodos[NUMNODES][2];
+
+vector<vector<int>> TransitionMatrix(24, vector<int>(24, 0));
 
 Cubo c1(DimBoard_X, DimBoard_Z,1.6);
 Cubo c2(DimBoard_X, DimBoard_Z, 1.3);
@@ -82,20 +84,22 @@ int LightControl(int &lightCTRL){
 }
 
 void PopulateLocNodes(){
-  
-  float cx = -150;
-  float cy = -250;
+
+  float cx = -DimBoard_X + 200;
+  float cy = -DimBoard_Z;
 
   for (int i = 0; i < NUMNODES; i++){
   	LocNodos[i][0] = cx;
   	LocNodos[i][1] = cy;
-  	cx += 100;
-  	if(cx > 150){
-  		cx = -150;
-  		cy += 100;
+  	cx += 250;
+  	if(cx > DimBoard_X){
+  		cx = -DimBoard_X + 200;
+  		cy += 180;
   	}
   }
 }
+
+
 
 void PopulateTMatrix(){
 	TransitionMatrix[0][1] = 1;
@@ -135,39 +139,15 @@ void PopulateTMatrix(){
 	TransitionMatrix[23][13] = 1;
 	
 	cout << "Traffic Transition Matrix with 24 nodes" << endl;
-	  for (int i = 0; i < NUMNODES; i++){
-	    for (int j = 0; j < NUMNODES; j++){
+	  for (int i = 0; i < 24; i++){
+	    for (int j = 0; j < 24; j++){
 	      cout << TransitionMatrix[i][j] << " ";
 	    }
 	    cout << "\n" << endl;
 	  }
 }
 
-void drawAxis()
-{
-     glLineWidth(3.0);
-     //X axis in red
-     glColor3f(1.0f,0.0f,0.0f);
-     glBegin(GL_LINES);
-       glVertex3f(X_MIN,0.0,0.0);
-       glVertex3f(X_MAX,0.0,0.0);
-     glEnd();
-     //Y axis in green
-     glColor3f(0.0f,1.0f,0.0f);
-     glBegin(GL_LINES);
-       glVertex3f(0.0,Y_MIN,0.0);
-       glVertex3f(0.0,Y_MAX,0.0);
-     glEnd();
-     //Z axis in blue
-     glColor3f(0.0f,0.0f,1.0f);
-     glBegin(GL_LINES);
-       glVertex3f(0.0,0.0,Z_MIN);
-       glVertex3f(0.0,0.0,Z_MAX);
-     glEnd();
-     glLineWidth(1.0);
- }
-
- void drawString(int x, int y, int z, const char* text) {
+void drawString(int x, int y, int z, const char* text) {
   glColor3f(1.0f, 1.0f, 1.0f);
  
   glRasterPos3i(x, y, z);
@@ -198,7 +178,6 @@ void drawAxis()
 void display()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //drawAxis();
     glColor3f(0.3, 0.3, 0.3);
     //El piso es dibujado
     glBegin(GL_QUADS);
