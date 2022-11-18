@@ -12,36 +12,38 @@
 #include "Cubo.h"
 
 //Variables dimensiones de la pantalla
-int WIDTH=500;
-int HEIGTH=500;
+int WIDTH = 500;
+int HEIGTH = 500;
 //Variables para establecer los valores de gluPerspective
-float FOVY=60.0;
-float ZNEAR=0.01;
-float ZFAR=900.0;
+float FOVY = 60.0;
+float ZNEAR = 0.01;
+float ZFAR = 900.0;
 //Variables para definir la posicion del observador
 //gluLookAt(EYE_X,EYE_Y,EYE_Z,CENTER_X,CENTER_Y,CENTER_Z,UP_X,UP_Y,UP_Z)
-float EYE_X=100.0;
-float EYE_Y=850.0;
-float EYE_Z=0.0;
-float CENTER_X=0;
-float CENTER_Y=0;
-float CENTER_Z=0;
-float UP_X=0;
-float UP_Y=1;
-float UP_Z=0;
+float EYE_X = 100.0;
+float EYE_Y = 850.0;
+float EYE_Z = 0.0;
+float CENTER_X = 0;
+float CENTER_Y = 0;
+float CENTER_Z = 0;
+float UP_X = 0;
+float UP_Y = 1;
+float UP_Z = 0;
 //Variables para dibujar los ejes del sistema
-float X_MIN=-500;
-float X_MAX=500;
-float Y_MIN=-500;
-float Y_MAX=500;
-float Z_MIN=-500;
-float Z_MAX=500;
+float X_MIN = -500;
+float X_MAX = 500;
+float Y_MIN = -500;
+float Y_MAX = 500;
+float Z_MIN = -500;
+float Z_MAX = 500;
+
 //Size del tablero
 int DimBoard_X = 300;
 int DimBoard_Z = 450;
-int Lightcolor=0;
-int LightCTRL=0;
+int Lightcolor = 0;
+int LightCTRL = 0;
 const int NUMNODES = 12;
+
 // Localizacion de los nodos
 float LocNodos[NUMNODES][2];
 
