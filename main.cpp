@@ -82,6 +82,7 @@ int LightControl(int &lightCTRL){
 }
 
 void PopulateLocNodes(){
+  
   float cx = -150;
   float cy = -250;
 
@@ -260,17 +261,19 @@ void keyboard(unsigned char key, int x, int y)
     glutPostRedisplay();
 }
 
-int main(int argc, char **argv)
-{
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
-    glutInitWindowPosition(100, 100);
-    glutInitWindowSize(WIDTH, HEIGTH);
-    glutCreateWindow("Cubo 1");
-    init();
-    glutDisplayFunc(display);
-    glutIdleFunc(idle);
-    glutKeyboardFunc(keyboard);
-    glutMainLoop();
-    return 0;
+int main(int argc, char **argv) {
+
+  PopulateLocNodes();
+
+  glutInit(&argc, argv);
+  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
+  glutInitWindowPosition(100, 100);
+  glutInitWindowSize(WIDTH, HEIGTH);
+  glutCreateWindow("Cubo 1");
+  init();
+  glutDisplayFunc(display);
+  glutIdleFunc(idle);
+  glutKeyboardFunc(keyboard);
+  glutMainLoop();
+  return 0;
 }
