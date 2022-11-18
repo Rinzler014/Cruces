@@ -41,7 +41,7 @@ int DimBoard_X = 300;
 int DimBoard_Z = 450;
 int Lightcolor=0;
 int LightCTRL=0;
-const int NUMNODES = 16;
+const int NUMNODES = 24;
 // Localizacion de los nodos
 float LocNodos[NUMNODES][2];
 
@@ -96,6 +96,52 @@ void PopulateLocNodes(){
   }
 }
 
+void PopulateTMatrix(){
+	TransitionMatrix[0][1] = 1;
+	TransitionMatrix[1][2] = 1;
+	TransitionMatrix[1][12] = 1;
+	TransitionMatrix[1][15] = 1;
+	TransitionMatrix[2][3] = 1;
+	TransitionMatrix[3][4] = 1;
+	TransitionMatrix[3][17] = 1;
+	TransitionMatrix[4][5] = 1;
+	// 5 -> final
+	TransitionMatrix[6][7] = 1;
+	TransitionMatrix[7][8] = 1;
+	TransitionMatrix[7][17] = 1;
+	TransitionMatrix[8][9] = 1;
+	TransitionMatrix[9][10] = 1;
+	TransitionMatrix[9][12] = 1;
+	TransitionMatrix[9][15] = 1;
+	TransitionMatrix[10][11] = 1;
+	// 11 - > final
+	TransitionMatrix[12][22] = 1;
+	TransitionMatrix[13][2] = 1;
+	TransitionMatrix[13][10] = 1;
+	TransitionMatrix[13][15] = 1;
+	TransitionMatrix[14][2] = 1;
+	TransitionMatrix[14][10] = 1;
+	TransitionMatrix[14][12] = 1;
+	TransitionMatrix[15][19] = 1;
+	TransitionMatrix[16][4] = 1;
+	TransitionMatrix[16][8] = 1;
+	TransitionMatrix[17][21] = 1;
+	TransitionMatrix[18][14] = 1;
+	// 19 -> final
+	TransitionMatrix[20][16] = 1;
+	// 21 -> final
+	// 22 -> final
+	TransitionMatrix[23][13] = 1;
+	
+	cout << "Traffic Transition Matrix with 24 nodes" << endl;
+	  for (int i = 0; i < NUMNODES; i++){
+	    for (int j = 0; j < NUMNODES; j++){
+	      cout << TransitionMatrix[i][j] << " ";
+	    }
+	    cout << "\n" << endl;
+	  }
+}
+
 void drawAxis()
 {
      glLineWidth(3.0);
@@ -134,6 +180,9 @@ void drawAxis()
 
  void init()
 {
+	
+	PopulateTMatrix();
+	
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(FOVY, (GLfloat)WIDTH/HEIGTH, ZNEAR, ZFAR);
