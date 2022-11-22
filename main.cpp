@@ -11,20 +11,20 @@
 
 #include "Cubo.h"
 
-#define NUM_OBJ 5
-#define NUM_NODES 12
+#define NUM_OBJ 1
+#define NUM_NODES 24
 
 //Variables dimensiones de la pantalla
 int WIDTH = 500;
 int HEIGTH = 500;
 //Variables para establecer los valores de gluPerspective
-float FOVY = 65.0;
+float FOVY = 60.0;
 float ZNEAR = 0.01;
 float ZFAR = 900.0;
 //Variables para definir la posicion del observador
 //gluLookAt(EYE_X,EYE_Y,EYE_Z,CENTER_X,CENTER_Y,CENTER_Z,UP_X,UP_Y,UP_Z)
 float EYE_X = 100.0;
-float EYE_Y = 860.0;
+float EYE_Y = 850.0;
 float EYE_Z = 0.0;
 float CENTER_X = 0;
 float CENTER_Y = 0;
@@ -43,11 +43,18 @@ float Z_MAX = 500;
 //Size del tablero
 int DimBoard_X = 300;
 int DimBoard_Z = 450;
+
+//Ligther control
 int Lightcolor = 0;
 int LightCTRL = 0;
 
+// Control variables of each agent
+int A1nextNode = 0;
+int A2nextNode = 2;
+float speed = 0.5;
+
 // Localizacion de los nodos
-float LocNodos[NUM_NODES][2];
+vector<vector<float>> locNodos(NUM_NODES, vector<float>(2, 0));
 
 vector<vector<int>> TransitionMatrix(NUM_NODES * 2, vector<int>(NUM_NODES * 2, 0));
 
@@ -84,14 +91,16 @@ int LightControl(int &lightCTRL){
   return Lightcolor;
 }
 
+/*
+
 void PopulateLocNodes(){
 
   float cx = -DimBoard_X + 200;
   float cy = -DimBoard_Z;
 
   for (int i = 0; i < NUM_NODES; i++){
-  	LocNodos[i][0] = cx;
-  	LocNodos[i][1] = cy;
+  	locNodos[i][0] = cx;
+  	locNodos[i][1] = cy;
   	cx += 250;
   	if(cx > DimBoard_X){
   		cx = -DimBoard_X + 200;
@@ -99,6 +108,93 @@ void PopulateLocNodes(){
   	}
   }
 }
+
+*/
+
+void PopulateLocNodes(){
+	
+	int x = 0, z = 1;
+	
+	// avenida principal
+	
+	locNodos[11][x] = -40;
+	locNodos[11][z] = 420;
+
+	locNodos[0][x] = 40;
+	locNodos[0][z] = 420;
+	
+	locNodos[10][x] = -40;
+	locNodos[10][z] = 220;
+	
+	locNodos[1][x] = 40;
+	locNodos[1][z] = 220;
+  	
+	locNodos[9][x] = -40;
+	locNodos[9][z] = 90;
+	
+	locNodos[2][x] = 40;
+	locNodos[2][z] = 90;
+  	
+  	locNodos[8][x] = -40;
+	locNodos[8][z] = -160;
+	
+	locNodos[3][x] = 40;
+	locNodos[3][z] = -160;
+  	
+  	locNodos[7][x] = -40;
+	locNodos[7][z] = -280;
+	
+	locNodos[4][x] = 40;
+	locNodos[4][z] = -280;
+  	
+  	locNodos[6][x] = -40;
+	locNodos[6][z] = -390;
+	
+	locNodos[5][x] = 40;
+	locNodos[5][z] = -390;
+  	
+  	// calle 1
+  	
+  	locNodos[18][x] = -250;
+	locNodos[18][z] = 190;
+	
+	locNodos[19][x] = -250;
+	locNodos[19][z] = 135;
+  	
+  	locNodos[14][x] = -80;
+	locNodos[14][z] = 190;
+	
+	locNodos[15][x] = -80;
+	locNodos[15][z] = 135;
+  	
+  	locNodos[12][x] = 80;
+	locNodos[12][z] = 190;
+	
+	locNodos[13][x] = 80;
+	locNodos[13][z] = 135;
+  	
+  	locNodos[22][x] = 250;
+	locNodos[22][z] = 190;
+	
+	locNodos[23][x] = 250;
+	locNodos[23][z] = 135;
+  	
+  	// calle 2
+  	
+  	locNodos[16][x] = -80;
+	locNodos[16][z] = -185;
+	
+	locNodos[17][x] = -80;
+	locNodos[17][z] = -240;
+  	
+  	locNodos[20][x] = -250;
+	locNodos[20][z] = -185;
+	
+	locNodos[21][x] = -250;
+	locNodos[21][z] = -240;
+
+}
+
 
 
 
@@ -160,24 +256,21 @@ void drawString(int x, int y, int z, const char* text) {
   }
 }
 
- void init()
-{
+ void init() {
 	
-	PopulateTMatrix();
-	
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(FOVY, (GLfloat)WIDTH/HEIGTH, ZNEAR, ZFAR);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(EYE_X,EYE_Y,EYE_Z,CENTER_X,CENTER_Y,CENTER_Z,UP_X,UP_Y,UP_Z);
-    glClearColor(0,0,0,0);
-    glEnable(GL_DEPTH_TEST);
-    srand(time(nullptr));
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluPerspective(FOVY, (GLfloat)WIDTH/HEIGTH, ZNEAR, ZFAR);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  gluLookAt(EYE_X,EYE_Y,EYE_Z,CENTER_X,CENTER_Y,CENTER_Z,UP_X,UP_Y,UP_Z);
+  glClearColor(0,0,0,0);
+  glEnable(GL_DEPTH_TEST);
+  srand(time(nullptr));
 
-    for (int i = 0; i < 5; i++){
-    	objects[i] = new Cubo(DimBoard_X, DimBoard_Z, 0.5);
-    }
+  for (int i = 0; i < NUM_OBJ; i++){
+    objects[i] = new Cubo(DimBoard_X, DimBoard_Z, speed);
+  }
 
 }
 
@@ -193,19 +286,61 @@ void display() {
         glVertex3d(DimBoard_X + 50, 0.0, -DimBoard_Z - 50);
     glEnd();
 
-    for (int i = 0; i < NUM_NODES; i++){
-    std::string s = std::to_string(i);
-    char const *pchar = s.c_str();
-    drawString(LocNodos[i][0],10,LocNodos[i][1], pchar);
-    }
+    
 
     TrafficLight(Lightcolor);
     Lightcolor= LightControl(LightCTRL);
 
-    for (int i = 0; i < int(objects.size()); i++){
-    	((Cubo *)objects[i])->draw();
-      ((Cubo *)objects[i])->update();
-    }
+    ((Cubo *)objects[0])->draw();
+    A1nextNode = ((Cubo *)objects[0])->update(locNodos, TransitionMatrix, A1nextNode, A2nextNode, speed);
+
+
+    // avenida principal
+  
+  	drawString(-40,10,420, "11");
+  	drawString(40,10,420, "0");
+  	
+  	drawString(-40,10,220, "10");
+  	drawString(40,10,220, "1");
+  	
+  	drawString(-40,10,90, "9");
+  	drawString(40,10,90, "2");
+  	
+  	drawString(-40,10,-160, "8");
+  	drawString(40,10,-160, "3");
+  	
+  	drawString(-40,10,-280, "7");
+  	drawString(40,10,-280, "4");
+  	
+  	drawString(-40,10,-390, "6");
+  	drawString(40,10,-390, "5");
+  	
+  	// calle 1
+  	
+  	drawString(-250,10,190, "18");
+  	drawString(-250,10,135, "19");
+  	
+  	drawString(-80,10,190, "14");
+  	drawString(-80,10,135, "15");
+  	
+  	drawString(80,10,190, "12");
+  	drawString(80,10,135, "13");
+  	
+  	drawString(250,10,190, "22");
+  	drawString(250,10,135, "23");
+  	
+  	// calle 2
+  	
+  	drawString(-80,10,-185, "16");
+  	drawString(-80,10,-240, "17");
+  	
+  	drawString(-250,10,-185, "20");
+  	drawString(-250,10,-240, "21");
+  	
+   // corregir funcion populatelocnodes
+   // a�adir funcion de ir a nodos
+   // current node -> choose a random node from the ones it can go
+   
         
     glutSwapBuffers();
     Sleep(5);
@@ -216,8 +351,7 @@ void idle(){
      display();
 }
 
-void keyboard(unsigned char key, int x, int y)
-{
+void keyboard(unsigned char key, int x, int y) {
     switch(key)
     {//SOLID
     case 's':
@@ -247,6 +381,7 @@ void keyboard(unsigned char key, int x, int y)
 int main(int argc, char **argv) {
 
   PopulateLocNodes();
+  PopulateTMatrix();
 
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );

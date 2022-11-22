@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <GL/glut.h>
 #include <iostream>
+#include <vector>
 
 
 using namespace std;
@@ -15,7 +16,7 @@ class Cubo {
         Cubo(int,int, float);
         ~Cubo();
         void draw();
-        void update();
+        int update(vector<vector<float>>, vector<vector<int>>, int, int, float);
 
         void getX();
         void getY();

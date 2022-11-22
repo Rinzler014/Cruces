@@ -1,5 +1,8 @@
 #include "Cubo.h"
 
+const int NUMNODES = 24;
+int node = 0;
+
 Cubo::Cubo(int dim_x,int dim_z, float vel)
 {
     DimBoard_X = dim_x;
@@ -8,8 +11,8 @@ Cubo::Cubo(int dim_x,int dim_z, float vel)
     //int c;
 
     //Se inicializa una posicion aleatoria dentro del tablero
-    Position[0] = (float)(rand()%(2*DimBoard_X)) - DimBoard_X;
-    Position[2] = (float)(rand()%(2*DimBoard_Z)) - DimBoard_Z;
+    Position[0] = 40;
+    Position[2] = 440;
     //Se inicializa el vector de direccion con un valor aleatorio
     Direction[0] = rand();
     Direction[1] = rand();
@@ -50,26 +53,71 @@ void Cubo::draw()
     glPopMatrix();
 }
 
-void Cubo::update()
-{
-    float new_x = Position[0] + Direction[0];
-    float new_z = Position[2] + Direction[2];
+//Calculate the distance to a node
+float dist2node(float Position[3], int targetNode, vector<vector<float>> locNodos){
 
-    //cout << "X=" << Position[0] << "; Y= " << Position[2] << endl;
+    float dx = locNodos[targetNode][0] - Position[0];
+    float dy = locNodos[targetNode][1] - Position[2];
 
-    if (abs(new_x) <= DimBoard_X)
-        Position[0] = new_x;
-    else {
-        Direction[0] *= -1.0;
-        Position[0] += Direction[0];
+    return sqrt(dx * dx + dy * dy);
+
+}
+
+//Function to find the next node
+int findIdxNode(int targetNode, vector<int> nodeSeq) {
+
+    for (int i = 0; i < 100; i++){
+        if(targetNode == nodeSeq[i]){ 
+            return i;
+        }
+    }
+    return 0;
+}
+
+void L2Norm(float Direction[3]){
+    float m = sqrt(Direction[0]*Direction[0] + Direction[1]*Direction[1] + Direction[2]*Direction[2]);
+    m += 0.00001;
+    Direction[0] /= m;
+    Direction[1] /= m;
+    Direction[2] /= m;
+}
+
+void NodeDirection(int targetNode, vector<vector<float>> locNodos, float Direction[3], float Position[3]){
+    Direction[0] = locNodos[targetNode][0]-Position[0];
+    Direction[2] = locNodos[targetNode][1]-Position[2];
+    L2Norm(Direction);
+}
+
+int retrieveNextnode(int cNode, vector<vector<int>> transitionMatrix, int otherAnextNode) {
+    vector<int> aux(NUMNODES);
+    int k = 0;
+
+    for (int i = 0; i < NUMNODES; i++) {
+        if(transitionMatrix[cNode][i] == 1 && i != otherAnextNode) {
+            aux[k] = i;
+            k++;
+        }
     }
 
-    if (abs(new_z) <= DimBoard_Z)
-        Position[2] = new_z;
-    else {
-        Direction[2] *= -1.0;
-        Position[2] += Direction[2];
+    int sel = rand() % k;
+    return aux[sel];
+    
+}
+
+int Cubo::update(vector<vector<float>> locNodos, vector<vector<int>> transitionMatrix, int nextNode, int otherAnextNode, float speed) {
+
+    NodeDirection(nextNode, locNodos, Direction, Position);
+    float dist = dist2node(Position, nextNode, locNodos);
+
+    if(dist < 5){
+        nextNode = retrieveNextnode(nextNode, transitionMatrix, otherAnextNode);
     }
 
-    //cout << "X=" << Position[0] << "; Y= " << Position[2] << endl;
+    Position[0] += Direction[0] * speed;
+    Position[2] += Direction[2] * speed;
+
+    cout << "Posicion: " << Position[0] << " " << Position[2] << " " << "NNode: " << nextNode << endl;
+
+    return nextNode;
+
 }
