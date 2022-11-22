@@ -51,7 +51,7 @@ int LightCTRL = 0;
 // Control variables of each agent
 int A1nextNode = 0;
 int A2nextNode = 2;
-float speed = 0.5;
+float speed = 1;
 
 // Localizacion de los nodos
 vector<vector<float>> locNodos(NUM_NODES, vector<float>(2, 0));
