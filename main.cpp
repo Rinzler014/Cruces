@@ -11,17 +11,20 @@
 
 #include "Cubo.h"
 
+#define NUM_OBJ 5
+#define NUM_NODES 12
+
 //Variables dimensiones de la pantalla
 int WIDTH = 500;
 int HEIGTH = 500;
 //Variables para establecer los valores de gluPerspective
-float FOVY = 60.0;
+float FOVY = 65.0;
 float ZNEAR = 0.01;
 float ZFAR = 900.0;
 //Variables para definir la posicion del observador
 //gluLookAt(EYE_X,EYE_Y,EYE_Z,CENTER_X,CENTER_Y,CENTER_Z,UP_X,UP_Y,UP_Z)
 float EYE_X = 100.0;
-float EYE_Y = 850.0;
+float EYE_Y = 860.0;
 float EYE_Z = 0.0;
 float CENTER_X = 0;
 float CENTER_Y = 0;
@@ -42,20 +45,16 @@ int DimBoard_X = 300;
 int DimBoard_Z = 450;
 int Lightcolor = 0;
 int LightCTRL = 0;
-const int NUMNODES = 12;
 
 // Localizacion de los nodos
-float LocNodos[NUMNODES][2];
+float LocNodos[NUM_NODES][2];
 
-vector<vector<int>> TransitionMatrix(24, vector<int>(24, 0));
+vector<vector<int>> TransitionMatrix(NUM_NODES * 2, vector<int>(NUM_NODES * 2, 0));
 
-Cubo c1(DimBoard_X, DimBoard_Z,1.6);
-Cubo c2(DimBoard_X, DimBoard_Z, 1.3);
-Cubo c3(DimBoard_X, DimBoard_Z, 0.1);
-Cubo c4(DimBoard_X, DimBoard_Z, 0.2);
-Cubo c5(DimBoard_X, DimBoard_Z, 0.18);
+vector<void *> objects(NUM_OBJ);
 
 void TrafficLight(int lightcolor){
+
   glPushMatrix();
   glTranslatef(0,20,0);
   if(lightcolor==0){
@@ -90,7 +89,7 @@ void PopulateLocNodes(){
   float cx = -DimBoard_X + 200;
   float cy = -DimBoard_Z;
 
-  for (int i = 0; i < NUMNODES; i++){
+  for (int i = 0; i < NUM_NODES; i++){
   	LocNodos[i][0] = cx;
   	LocNodos[i][1] = cy;
   	cx += 250;
@@ -175,42 +174,45 @@ void drawString(int x, int y, int z, const char* text) {
     glClearColor(0,0,0,0);
     glEnable(GL_DEPTH_TEST);
     srand(time(nullptr));
+
+    for (int i = 0; i < 5; i++){
+    	objects[i] = new Cubo(DimBoard_X, DimBoard_Z, 0.5);
+    }
+
 }
 
-void display()
-{
+void display() {
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glColor3f(0.3, 0.3, 0.3);
     //El piso es dibujado
     glBegin(GL_QUADS);
-        glVertex3d(-DimBoard_X, 0.0, -DimBoard_Z);
-        glVertex3d(-DimBoard_X, 0.0, DimBoard_Z);
-        glVertex3d(DimBoard_X, 0.0, DimBoard_Z);
-        glVertex3d(DimBoard_X, 0.0, -DimBoard_Z);
+        glVertex3d(-DimBoard_X - 50, 0.0, -DimBoard_Z - 50);
+        glVertex3d(-DimBoard_X - 50, 0.0, DimBoard_Z + 50);
+        glVertex3d(DimBoard_X + 50, 0.0, DimBoard_Z + 50);
+        glVertex3d(DimBoard_X + 50, 0.0, -DimBoard_Z - 50);
     glEnd();
 
-    for (int i = 0; i < NUMNODES; i++){
+    for (int i = 0; i < NUM_NODES; i++){
     std::string s = std::to_string(i);
     char const *pchar = s.c_str();
     drawString(LocNodos[i][0],10,LocNodos[i][1], pchar);
-  }
+    }
 
     TrafficLight(Lightcolor);
     Lightcolor= LightControl(LightCTRL);
-    c1.draw();
-    c2.draw();
-    
 
-    c1.update();
-    c2.update();
-    
-
+    for (int i = 0; i < int(objects.size()); i++){
+    	((Cubo *)objects[i])->draw();
+      ((Cubo *)objects[i])->update();
+    }
+        
     glutSwapBuffers();
     Sleep(5);
+
 }
 
-void idle()
-{
+void idle(){
      display();
 }
 
@@ -250,11 +252,11 @@ int main(int argc, char **argv) {
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
   glutInitWindowPosition(100, 100);
   glutInitWindowSize(WIDTH, HEIGTH);
-  glutCreateWindow("Cubo 1");
+  glutCreateWindow("Traffic Simulation");
   init();
   glutDisplayFunc(display);
   glutIdleFunc(idle);
   glutKeyboardFunc(keyboard);
   glutMainLoop();
-  return 0;
+
 }

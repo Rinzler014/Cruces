@@ -10,13 +10,18 @@
 
 using namespace std;
 
-class Cubo
-{
+class Cubo {
     public:
         Cubo(int,int, float);
         ~Cubo();
         void draw();
         void update();
+
+        void getX();
+        void getY();
+        void getZ();
+
+        void getRadio();
 
     protected:
 
@@ -38,6 +43,7 @@ class Cubo
         float Direction[3] = {0.0, 5.0, 0.0};
         int DimBoard_X;
         int DimBoard_Z;
+        int radio;
 
 };
 
