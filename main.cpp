@@ -11,7 +11,7 @@
 
 #include "Cubo.h"
 
-#define NUM_OBJ 1
+#define NUM_OBJ 5
 #define NUM_NODES 24
 
 //Variables dimensiones de la pantalla
@@ -286,14 +286,12 @@ void display() {
         glVertex3d(DimBoard_X + 50, 0.0, -DimBoard_Z - 50);
     glEnd();
 
-    
 
     TrafficLight(Lightcolor);
     Lightcolor= LightControl(LightCTRL);
 
     ((Cubo *)objects[0])->draw();
     A1nextNode = ((Cubo *)objects[0])->update(locNodos, TransitionMatrix, A1nextNode, A2nextNode, speed);
-
 
     // avenida principal
   
@@ -351,32 +349,6 @@ void idle(){
      display();
 }
 
-void keyboard(unsigned char key, int x, int y) {
-    switch(key)
-    {//SOLID
-    case 's':
-    case 'S':
-            glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-            glShadeModel(GL_FLAT);
-      break;
-    //INTERPOL
-    case 'i':
-    case 'I':
-            glShadeModel(GL_SMOOTH);
-            glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-      break;
-
-    case 'w':
-    case 'W':
-            glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-      break;
-
-    case 27:   // escape
-      exit(0);
-      break;
-    }
-    glutPostRedisplay();
-}
 
 int main(int argc, char **argv) {
 
@@ -391,7 +363,6 @@ int main(int argc, char **argv) {
   init();
   glutDisplayFunc(display);
   glutIdleFunc(idle);
-  glutKeyboardFunc(keyboard);
   glutMainLoop();
 
 }
