@@ -88,12 +88,12 @@ void NodeDirection(int targetNode, vector<vector<float>> locNodos, float Directi
     L2Norm(Direction);
 }
 
-int retrieveNextnode(int cNode, vector<vector<int>> transitionMatrix, int otherAnextNode) {
+int retrieveNextnode(int cNode, vector<vector<int>> transitionMatrix) {
     vector<int> aux(NUMNODES);
     int k = 0;
 
     for (int i = 0; i < NUMNODES; i++) {
-        if(transitionMatrix[cNode][i] == 1 && i != otherAnextNode) {
+        if(transitionMatrix[cNode][i] == 1) {
             aux[k] = i;
             k++;
         }
@@ -104,13 +104,13 @@ int retrieveNextnode(int cNode, vector<vector<int>> transitionMatrix, int otherA
     
 }
 
-int Cubo::update(vector<vector<float>> locNodos, vector<vector<int>> transitionMatrix, int nextNode, int otherAnextNode, float speed) {
+int Cubo::update(vector<vector<float>> locNodos, vector<vector<int>> transitionMatrix, int nextNode, float speed) {
 
     NodeDirection(nextNode, locNodos, Direction, Position);
     float dist = dist2node(Position, nextNode, locNodos);
 
     if(dist < 5){
-        nextNode = retrieveNextnode(nextNode, transitionMatrix, otherAnextNode);
+        nextNode = retrieveNextnode(nextNode, transitionMatrix);
     }
 
     Position[0] += Direction[0] * speed;

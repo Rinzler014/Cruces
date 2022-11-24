@@ -11,7 +11,7 @@
 
 #include "Cubo.h"
 
-#define NUM_OBJ 5
+#define NUM_OBJ 2
 #define NUM_NODES 24
 
 //Variables dimensiones de la pantalla
@@ -49,9 +49,8 @@ int Lightcolor = 0;
 int LightCTRL = 0;
 
 // Control variables of each agent
-int A1nextNode = 0;
-int A2nextNode = 2;
-float speed = 1;
+vector<int> AiNextNode(NUM_OBJ);
+float speed = 0.5;
 
 // Localizacion de los nodos
 vector<vector<float>> locNodos(NUM_NODES, vector<float>(2, 0));
@@ -90,26 +89,6 @@ int LightControl(int &lightCTRL){
   }
   return Lightcolor;
 }
-
-/*
-
-void PopulateLocNodes(){
-
-  float cx = -DimBoard_X + 200;
-  float cy = -DimBoard_Z;
-
-  for (int i = 0; i < NUM_NODES; i++){
-  	locNodos[i][0] = cx;
-  	locNodos[i][1] = cy;
-  	cx += 250;
-  	if(cx > DimBoard_X){
-  		cx = -DimBoard_X + 200;
-  		cy += 180;
-  	}
-  }
-}
-
-*/
 
 void PopulateLocNodes(){
 	
@@ -286,15 +265,16 @@ void display() {
         glVertex3d(DimBoard_X + 50, 0.0, -DimBoard_Z - 50);
     glEnd();
 
-
     TrafficLight(Lightcolor);
-    Lightcolor= LightControl(LightCTRL);
+    Lightcolor = LightControl(LightCTRL);
 
-    ((Cubo *)objects[0])->draw();
-    A1nextNode = ((Cubo *)objects[0])->update(locNodos, TransitionMatrix, A1nextNode, A2nextNode, speed);
+	for (int i = 0; i < NUM_OBJ; i++){
+		((Cubo *)objects[i])->draw();
+		AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, TransitionMatrix, AiNextNode[i], speed);
+	}
+
 
     // avenida principal
-  
   	drawString(-40,10,420, "11");
   	drawString(40,10,420, "0");
   	
