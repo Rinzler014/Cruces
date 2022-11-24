@@ -11,8 +11,13 @@
 
 #include "Cubo.h"
 
+#include "RgbImage.h"
+
 #define NUM_OBJ 2
 #define NUM_NODES 24
+
+#define NTextures 6
+GLuint	texture[NTextures];
 
 //Variables dimensiones de la pantalla
 int WIDTH = 500;
@@ -58,6 +63,31 @@ vector<vector<float>> locNodos(NUM_NODES, vector<float>(2, 0));
 vector<vector<int>> TransitionMatrix(NUM_NODES * 2, vector<int>(NUM_NODES * 2, 0));
 
 vector<void *> objects(NUM_OBJ);
+
+char* filename0 = "Mapa.bmp";
+
+void loadTextureFromFile(char *filename, int index)
+{
+	glClearColor (0.0, 0.0, 0.0, 0.0);
+	glShadeModel(GL_FLAT);
+	//glEnable(GL_DEPTH_TEST);
+
+	RgbImage theTexMap( filename );
+
+    //generate an OpenGL texture ID for this texture
+    glGenTextures(1, &texture[index]);
+    //bind to the new texture ID
+    glBindTexture(GL_TEXTURE_2D, texture[index]);
+
+
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, theTexMap.GetNumCols(), theTexMap.GetNumRows(), 0,
+                     GL_RGB, GL_UNSIGNED_BYTE, theTexMap.ImageData());
+    theTexMap.Reset();
+}
 
 void TrafficLight(int lightcolor){
 
@@ -257,13 +287,18 @@ void display() {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glColor3f(0.3, 0.3, 0.3);
-    //El piso es dibujado
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
     glBegin(GL_QUADS);
+		glTexCoord2f(0.0, 1.0);
         glVertex3d(-DimBoard_X - 50, 0.0, -DimBoard_Z - 50);
+		glTexCoord2f(0.0, 0.0);
         glVertex3d(-DimBoard_X - 50, 0.0, DimBoard_Z + 50);
+		glTexCoord2f(1.0, 0.0);
         glVertex3d(DimBoard_X + 50, 0.0, DimBoard_Z + 50);
+		glTexCoord2f(1.0, 1.0);
         glVertex3d(DimBoard_X + 50, 0.0, -DimBoard_Z - 50);
     glEnd();
+	glDisable(GL_TEXTURE_2D);
 
     TrafficLight(Lightcolor);
     Lightcolor = LightControl(LightCTRL);
