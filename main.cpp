@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <random>
 #include <iomanip>
+#include <string>
 
 #include "Cubo.h"
 
@@ -16,7 +17,7 @@
 #define NUM_OBJ 2
 #define NUM_NODES 24
 
-#define NTextures 6
+#define NTextures 1
 GLuint	texture[NTextures];
 
 //Variables dimensiones de la pantalla
@@ -64,15 +65,15 @@ vector<vector<int>> TransitionMatrix(NUM_NODES * 2, vector<int>(NUM_NODES * 2, 0
 
 vector<void *> objects(NUM_OBJ);
 
-char* filename0 = "Mapa.bmp";
+char* filename0 = "map.bmp";
 
-void loadTextureFromFile(char *filename, int index)
-{
+void loadTextureFromFile(char *filename, int index) {
+
 	glClearColor (0.0, 0.0, 0.0, 0.0);
-	glShadeModel(GL_FLAT);
+	glShadeModel(GL_FLAT); 
 	//glEnable(GL_DEPTH_TEST);
 
-	RgbImage theTexMap( filename );
+	RgbImage theTexMap(filename);
 
     //generate an OpenGL texture ID for this texture
     glGenTextures(1, &texture[index]);
@@ -208,6 +209,7 @@ void PopulateLocNodes(){
 
 
 void PopulateTMatrix(){
+
 	TransitionMatrix[0][1] = 1;
 	TransitionMatrix[1][2] = 1;
 	TransitionMatrix[1][12] = 1;
@@ -277,6 +279,11 @@ void drawString(int x, int y, int z, const char* text) {
   glEnable(GL_DEPTH_TEST);
   srand(time(nullptr));
 
+  glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+  glShadeModel(GL_FLAT);
+  glEnable(GL_DEPTH_TEST);
+  loadTextureFromFile(filename0, 0);
+
   for (int i = 0; i < NUM_OBJ; i++){
     objects[i] = new Cubo(DimBoard_X, DimBoard_Z, speed);
   }
@@ -286,7 +293,8 @@ void drawString(int x, int y, int z, const char* text) {
 void display() {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glColor3f(0.3, 0.3, 0.3);
+    glColor3f(1.0, 1.0, 1.0);
+	glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texture[0]);
     glBegin(GL_QUADS);
 		glTexCoord2f(0.0, 1.0);
