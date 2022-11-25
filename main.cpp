@@ -65,9 +65,9 @@ vector<vector<float>> locNodos(NUM_NODES, vector<float>(2, 0));
 
 vector<void *> objects(NUM_OBJ);
 
-char* filename0 = "map.bmp";
+const char* filename0 = "map.bmp";
 
-void loadTextureFromFile(char *filename, int index) {
+void loadTextureFromFile(const char *filename, int index) {
 
 	glClearColor (0.0, 0.0, 0.0, 0.0);
 	glShadeModel(GL_FLAT); 
