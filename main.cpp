@@ -15,7 +15,7 @@
 #include "RgbImage.h"
 
 #define NUM_OBJ 2
-#define NUM_NODES 51
+#define NUM_NODES 35
 
 #define NTextures 1
 GLuint	texture[NTextures];
@@ -274,13 +274,9 @@ void display() {
 
 	
 	for (int i = 0; i < NUM_NODES - 1; i++){
-
 		drawString(locNodos[i][0], 10, locNodos[i][1], to_string(i).c_str());
-
 	}
 
-
-  	
    // corregir funcion populatelocnodes
    // a�adir funcion de ir a nodos
    // current node -> choose a random node from the ones it can go
