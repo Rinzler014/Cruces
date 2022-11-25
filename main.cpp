@@ -15,7 +15,7 @@
 #include "RgbImage.h"
 
 #define NUM_OBJ 2
-#define NUM_NODES 24
+#define NUM_NODES 51
 
 #define NTextures 1
 GLuint	texture[NTextures];
@@ -24,14 +24,14 @@ GLuint	texture[NTextures];
 int WIDTH = 500;
 int HEIGTH = 500;
 //Variables para establecer los valores de gluPerspective
-float FOVY = 60.0;
+float FOVY = 65.0;
 float ZNEAR = 0.01;
 float ZFAR = 900.0;
 //Variables para definir la posicion del observador
 //gluLookAt(EYE_X,EYE_Y,EYE_Z,CENTER_X,CENTER_Y,CENTER_Z,UP_X,UP_Y,UP_Z)
-float EYE_X = 100.0;
-float EYE_Y = 850.0;
-float EYE_Z = 0.0;
+float EYE_X = 0.0;
+float EYE_Y = 810.0;
+float EYE_Z = 100.0;
 float CENTER_X = 0;
 float CENTER_Y = 0;
 float CENTER_Z = 0;
@@ -47,8 +47,8 @@ float Z_MIN = -500;
 float Z_MAX = 500;
 
 //Size del tablero
-int DimBoard_X = 300;
-int DimBoard_Z = 450;
+int DimBoard_X = 450;
+int DimBoard_Z = 300;
 
 //Ligther control
 int Lightcolor = 0;
@@ -61,7 +61,7 @@ float speed = 0.5;
 // Localizacion de los nodos
 vector<vector<float>> locNodos(NUM_NODES, vector<float>(2, 0));
 
-vector<vector<int>> TransitionMatrix(NUM_NODES * 2, vector<int>(NUM_NODES * 2, 0));
+//vector<vector<int>> TransitionMatrix(NUM_NODES * 2, vector<int>(NUM_NODES * 2, 0));
 
 vector<void *> objects(NUM_OBJ);
 
@@ -123,91 +123,46 @@ int LightControl(int &lightCTRL){
 
 void PopulateLocNodes(){
 	
-	int x = 0, z = 1;
-	
-	// avenida principal
-	
-	locNodos[11][x] = -40;
-	locNodos[11][z] = 420;
-
-	locNodos[0][x] = 40;
-	locNodos[0][z] = 420;
-	
-	locNodos[10][x] = -40;
-	locNodos[10][z] = 220;
-	
-	locNodos[1][x] = 40;
-	locNodos[1][z] = 220;
-  	
-	locNodos[9][x] = -40;
-	locNodos[9][z] = 90;
-	
-	locNodos[2][x] = 40;
-	locNodos[2][z] = 90;
-  	
-  	locNodos[8][x] = -40;
-	locNodos[8][z] = -160;
-	
-	locNodos[3][x] = 40;
-	locNodos[3][z] = -160;
-  	
-  	locNodos[7][x] = -40;
-	locNodos[7][z] = -280;
-	
-	locNodos[4][x] = 40;
-	locNodos[4][z] = -280;
-  	
-  	locNodos[6][x] = -40;
-	locNodos[6][z] = -390;
-	
-	locNodos[5][x] = 40;
-	locNodos[5][z] = -390;
-  	
-  	// calle 1
-  	
-  	locNodos[18][x] = -250;
-	locNodos[18][z] = 190;
-	
-	locNodos[19][x] = -250;
-	locNodos[19][z] = 135;
-  	
-  	locNodos[14][x] = -80;
-	locNodos[14][z] = 190;
-	
-	locNodos[15][x] = -80;
-	locNodos[15][z] = 135;
-  	
-  	locNodos[12][x] = 80;
-	locNodos[12][z] = 190;
-	
-	locNodos[13][x] = 80;
-	locNodos[13][z] = 135;
-  	
-  	locNodos[22][x] = 250;
-	locNodos[22][z] = 190;
-	
-	locNodos[23][x] = 250;
-	locNodos[23][z] = 135;
-  	
-  	// calle 2
-  	
-  	locNodos[16][x] = -80;
-	locNodos[16][z] = -185;
-	
-	locNodos[17][x] = -80;
-	locNodos[17][z] = -240;
-  	
-  	locNodos[20][x] = -250;
-	locNodos[20][z] = -185;
-	
-	locNodos[21][x] = -250;
-	locNodos[21][z] = -240;
+locNodos[0][0] = -419;locNodos[0][1] = -266;
+locNodos[1][0] = -382;locNodos[1][1] = -234;
+locNodos[2][0] = -142;locNodos[2][1] = -267;
+locNodos[3][0] = -143;locNodos[3][1] = -236;
+locNodos[4][0] = -92;locNodos[4][1] = -266;
+locNodos[5][0] = -92;locNodos[5][1] = -234;
+locNodos[6][0] = 98;locNodos[6][1] = -267;
+locNodos[7][0] = 98;locNodos[7][1] = -234;
+locNodos[8][0] = 148;locNodos[8][1] = -266;
+locNodos[9][0] = 151;locNodos[9][1] = -234;
+locNodos[10][0] = 374;locNodos[10][1] = -234;
+locNodos[11][0] = 418;locNodos[11][1] = -267;
+locNodos[12][0] = -419;locNodos[12][1] = -19;
+locNodos[13][0] = -383;locNodos[13][1] = -19;
+locNodos[14][0] = -419;locNodos[14][1] = 27;
+locNodos[15][0] = -383;locNodos[15][1] = 27;
+locNodos[16][0] = -142;locNodos[16][1] = -19;
+locNodos[17][0] = -143;locNodos[17][1] = 27;
+locNodos[18][0] = -92;locNodos[18][1] = -19;
+locNodos[19][0] = -94;locNodos[19][1] = 25;
+locNodos[20][0] = 98;locNodos[20][1] = -19;
+locNodos[21][0] = 140;locNodos[21][1] = -18;
+locNodos[22][0] = 374;locNodos[22][1] = -21;
+locNodos[23][0] = 422;locNodos[23][1] = -21;
+locNodos[24][0] = 372;locNodos[24][1] = 27;
+locNodos[25][0] = 418;locNodos[25][1] = 27;
+locNodos[26][0] = -418;locNodos[26][1] = 271;
+locNodos[27][0] = -383;locNodos[27][1] = 244;
+locNodos[28][0] = -140;locNodos[28][1] = 245;
+locNodos[29][0] = -142;locNodos[29][1] = 272;
+locNodos[30][0] = -91;locNodos[30][1] = 244;
+locNodos[31][0] = -94;locNodos[31][1] = 272;
+locNodos[32][0] = 372;locNodos[32][1] = 244;
+locNodos[33][0] = 418;locNodos[33][1] = 272;
 
 }
 
 
 
-
+/*
 void PopulateTMatrix(){
 
 	TransitionMatrix[0][1] = 1;
@@ -255,6 +210,8 @@ void PopulateTMatrix(){
 	  }
 }
 
+*/
+
 void drawString(int x, int y, int z, const char* text) {
   glColor3f(1.0f, 1.0f, 1.0f);
  
@@ -284,9 +241,13 @@ void drawString(int x, int y, int z, const char* text) {
   glEnable(GL_DEPTH_TEST);
   loadTextureFromFile(filename0, 0);
 
+  /*
+
   for (int i = 0; i < NUM_OBJ; i++){
     objects[i] = new Cubo(DimBoard_X, DimBoard_Z, speed);
   }
+
+  */
 
 }
 
@@ -298,65 +259,27 @@ void display() {
     glBindTexture(GL_TEXTURE_2D, texture[0]);
     glBegin(GL_QUADS);
 		glTexCoord2f(0.0, 1.0);
-        glVertex3d(-DimBoard_X - 50, 0.0, -DimBoard_Z - 50);
+        glVertex3d(-DimBoard_X, 0.0, -DimBoard_Z);
 		glTexCoord2f(0.0, 0.0);
-        glVertex3d(-DimBoard_X - 50, 0.0, DimBoard_Z + 50);
+        glVertex3d(-DimBoard_X, 0.0, DimBoard_Z);
 		glTexCoord2f(1.0, 0.0);
-        glVertex3d(DimBoard_X + 50, 0.0, DimBoard_Z + 50);
+        glVertex3d(DimBoard_X, 0.0, DimBoard_Z);
 		glTexCoord2f(1.0, 1.0);
-        glVertex3d(DimBoard_X + 50, 0.0, -DimBoard_Z - 50);
+        glVertex3d(DimBoard_X, 0.0, -DimBoard_Z);
     glEnd();
 	glDisable(GL_TEXTURE_2D);
 
     TrafficLight(Lightcolor);
     Lightcolor = LightControl(LightCTRL);
 
-	for (int i = 0; i < NUM_OBJ; i++){
-		((Cubo *)objects[i])->draw();
-		AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, TransitionMatrix, AiNextNode[i], speed);
+	
+	for (int i = 0; i < NUM_NODES - 1; i++){
+
+		drawString(locNodos[i][0], 10, locNodos[i][1], to_string(i).c_str());
+
 	}
 
 
-    // avenida principal
-  	drawString(-40,10,420, "11");
-  	drawString(40,10,420, "0");
-  	
-  	drawString(-40,10,220, "10");
-  	drawString(40,10,220, "1");
-  	
-  	drawString(-40,10,90, "9");
-  	drawString(40,10,90, "2");
-  	
-  	drawString(-40,10,-160, "8");
-  	drawString(40,10,-160, "3");
-  	
-  	drawString(-40,10,-280, "7");
-  	drawString(40,10,-280, "4");
-  	
-  	drawString(-40,10,-390, "6");
-  	drawString(40,10,-390, "5");
-  	
-  	// calle 1
-  	
-  	drawString(-250,10,190, "18");
-  	drawString(-250,10,135, "19");
-  	
-  	drawString(-80,10,190, "14");
-  	drawString(-80,10,135, "15");
-  	
-  	drawString(80,10,190, "12");
-  	drawString(80,10,135, "13");
-  	
-  	drawString(250,10,190, "22");
-  	drawString(250,10,135, "23");
-  	
-  	// calle 2
-  	
-  	drawString(-80,10,-185, "16");
-  	drawString(-80,10,-240, "17");
-  	
-  	drawString(-250,10,-185, "20");
-  	drawString(-250,10,-240, "21");
   	
    // corregir funcion populatelocnodes
    // a�adir funcion de ir a nodos
@@ -376,7 +299,6 @@ void idle(){
 int main(int argc, char **argv) {
 
   PopulateLocNodes();
-  PopulateTMatrix();
 
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
