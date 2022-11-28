@@ -44,7 +44,9 @@ class Cubo {
         float Direction[3] = {0.0, 5.0, 0.0};
         int DimBoard_X;
         int DimBoard_Z;
+
         int radio;
+        int dist_to_node;
 
 };
 

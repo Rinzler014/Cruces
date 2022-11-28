@@ -166,25 +166,24 @@ void PopulateTMatrix(){
   TransitionMatrix[0][12] = 1;
   TransitionMatrix[1][3] = 1;
   TransitionMatrix[2][0] = 1;
-  TransitionMatrix[2][3] = 1;
   TransitionMatrix[3][5] = 1;
   TransitionMatrix[3][16] = 1;
-  TransitionMatrix[4][2] = 1;
+  TransitionMatrix[4][3] = 1;
+  TransitionMatrix[5][2] = 1;
   TransitionMatrix[5][7] = 1;
-  TransitionMatrix[5][4] = 1;
   TransitionMatrix[6][4] = 1;
-  TransitionMatrix[6][7] = 1;
   TransitionMatrix[7][9] = 1;
   TransitionMatrix[7][20] = 1;
   TransitionMatrix[8][6] = 1;
-  TransitionMatrix[9][8] = 1;
+  TransitionMatrix[8][7] = 1;
+  TransitionMatrix[9][6] = 1;
   TransitionMatrix[9][10] = 1;
   TransitionMatrix[10][22] = 1;
   TransitionMatrix[11][8] = 1;
   TransitionMatrix[12][14] = 1;
+  TransitionMatrix[12][15] = 1;
   TransitionMatrix[13][1] = 1;
-  TransitionMatrix[13][12] = 1;
-  TransitionMatrix[14][15] = 1;
+  TransitionMatrix[13][14] = 1;
   TransitionMatrix[14][26] = 1;
   TransitionMatrix[15][13] = 1;
   TransitionMatrix[15][17] = 1;
@@ -202,22 +201,21 @@ void PopulateTMatrix(){
   TransitionMatrix[22][21] = 1;
   TransitionMatrix[22][24] = 1;
   TransitionMatrix[23][11] = 1;
-  TransitionMatrix[23][22] = 1;
-  TransitionMatrix[24][25] = 1;
+  TransitionMatrix[24][23] = 1;
   TransitionMatrix[24][32] = 1;
+  TransitionMatrix[25][22] = 1;
   TransitionMatrix[25][23] = 1;
   TransitionMatrix[26][29] = 1;
   TransitionMatrix[27][15] = 1;
   TransitionMatrix[28][27] = 1;
-  TransitionMatrix[28][29] = 1;
+  TransitionMatrix[28][31] = 1;
+  TransitionMatrix[29][30] = 1;
   TransitionMatrix[29][31] = 1;
   TransitionMatrix[30][19] = 1;
   TransitionMatrix[30][28] = 1;
-  TransitionMatrix[31][30] = 1;
   TransitionMatrix[31][33] = 1;
   TransitionMatrix[32][30] = 1;
-  TransitionMatrix[33][25] = 1;
-
+  TransitionMatrix[33][25] = 1; 
 	
 	cout << "Traffic Transition Matrix with 24 nodes" << endl;
 	  for (int i = 0; i < 24; i++){
@@ -312,6 +310,8 @@ int main(int argc, char **argv) {
 
   PopulateLocNodes();
   PopulateTMatrix();
+
+  speed = 0.7;
 
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
