@@ -61,7 +61,7 @@ float speed = 0.5;
 // Localizacion de los nodos
 vector<vector<float>> locNodos(NUM_NODES, vector<float>(2, 0));
 
-//vector<vector<int>> TransitionMatrix(NUM_NODES * 2, vector<int>(NUM_NODES * 2, 0));
+vector<vector<int>> TransitionMatrix(NUM_NODES * 2, vector<int>(NUM_NODES * 2, 0));
 
 vector<void *> objects(NUM_OBJ);
 
@@ -159,7 +159,7 @@ void PopulateLocNodes(){
   locNodos[33][0] = 418;locNodos[33][1] = 272;
 
 }
-/*
+
 
 void PopulateTMatrix(){
 
@@ -227,7 +227,7 @@ void PopulateTMatrix(){
 	    cout << "\n" << endl;
 	  }
 }
-*/
+
 
 
 void drawString(int x, int y, int z, const char* text) {
@@ -259,13 +259,9 @@ void drawString(int x, int y, int z, const char* text) {
   glEnable(GL_DEPTH_TEST);
   loadTextureFromFile(filename0, 0);
 
-  /*
-
   for (int i = 0; i < NUM_OBJ; i++){
     objects[i] = new Cubo(DimBoard_X, DimBoard_Z, speed);
   }
-
-  */
 
 }
 
@@ -295,13 +291,15 @@ void display() {
 		drawString(locNodos[i][0], 10, locNodos[i][1], to_string(i).c_str());
 	}
 
-   // corregir funcion populatelocnodes
-   // a�adir funcion de ir a nodos
-   // current node -> choose a random node from the ones it can go
-   
-        
-    glutSwapBuffers();
-    Sleep(5);
+  for (int i = 0; i < NUM_OBJ; i++){
+    ((Cubo *)objects[i])->draw();
+
+    AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, TransitionMatrix, AiNextNode[i], speed);
+
+  }
+
+  glutSwapBuffers();
+  Sleep(5);
 
 }
 
@@ -313,6 +311,7 @@ void idle(){
 int main(int argc, char **argv) {
 
   PopulateLocNodes();
+  PopulateTMatrix();
 
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
