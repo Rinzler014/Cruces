@@ -23,6 +23,7 @@ class Cubo {
         void getZ();
 
         void getRadio();
+        int getininopde();
 
     protected:
 
@@ -47,6 +48,7 @@ class Cubo {
 
         int radio;
         int dist_to_node;
+        int nnode;
 
 };
 

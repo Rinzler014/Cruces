@@ -11,7 +11,7 @@ Cubo::Cubo(int dim_x,int dim_z, float vel, vector<vector<float>> locNodos)
     //int c;
 
     int num_ran = rand() % 33;
-
+    nnode = num_ran;
     //Se inicializa una posicion aleatoria dentro del tablero
     Position[0] = locNodos[num_ran][0];
     Position[2] = locNodos[num_ran][1];
@@ -123,3 +123,6 @@ int Cubo::update(vector<vector<float>> locNodos, vector<vector<int>> transitionM
     return nextNode;
 
 }
+
+
+int Cubo::getininopde() { return (nnode); }
