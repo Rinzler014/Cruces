@@ -292,8 +292,16 @@ void display() {
   for (int i = 0; i < NUM_OBJ; i++){
     ((Cubo *)objects[i])->draw();
 
-    AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, TransitionMatrix, AiNextNode[i], speed);
-
+    try
+    {
+      AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, TransitionMatrix, AiNextNode[i], speed);
+    }
+    catch(const std::exception& e)
+    {
+      std::cerr << e.what() << '\n';
+    }
+    
+  
   }
 
   glutSwapBuffers();

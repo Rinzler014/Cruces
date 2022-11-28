@@ -1,6 +1,6 @@
 #include "Cubo.h"
 
-const int NUMNODES = 24;
+const int NUMNODES = 35;
 int node = 0;
 
 Cubo::Cubo(int dim_x,int dim_z, float vel, vector<vector<float>> locNodos)
