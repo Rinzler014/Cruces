@@ -123,83 +123,149 @@ int LightControl(int &lightCTRL){
 
 void PopulateLocNodes(){
 	
-locNodos[0][0] = -419;locNodos[0][1] = -266;
-locNodos[1][0] = -382;locNodos[1][1] = -234;
-locNodos[2][0] = -142;locNodos[2][1] = -267;
-locNodos[3][0] = -143;locNodos[3][1] = -236;
-locNodos[4][0] = -92;locNodos[4][1] = -266;
-locNodos[5][0] = -92;locNodos[5][1] = -234;
-locNodos[6][0] = 98;locNodos[6][1] = -267;
-locNodos[7][0] = 98;locNodos[7][1] = -234;
-locNodos[8][0] = 148;locNodos[8][1] = -266;
-locNodos[9][0] = 151;locNodos[9][1] = -234;
-locNodos[10][0] = 374;locNodos[10][1] = -234;
-locNodos[11][0] = 418;locNodos[11][1] = -267;
-locNodos[12][0] = -419;locNodos[12][1] = -19;
-locNodos[13][0] = -383;locNodos[13][1] = -19;
-locNodos[14][0] = -419;locNodos[14][1] = 27;
-locNodos[15][0] = -383;locNodos[15][1] = 27;
-locNodos[16][0] = -142;locNodos[16][1] = -19;
-locNodos[17][0] = -143;locNodos[17][1] = 27;
-locNodos[18][0] = -92;locNodos[18][1] = -19;
-locNodos[19][0] = -94;locNodos[19][1] = 25;
-locNodos[20][0] = 98;locNodos[20][1] = -19;
-locNodos[21][0] = 140;locNodos[21][1] = -18;
-locNodos[22][0] = 374;locNodos[22][1] = -21;
-locNodos[23][0] = 422;locNodos[23][1] = -21;
-locNodos[24][0] = 372;locNodos[24][1] = 27;
-locNodos[25][0] = 418;locNodos[25][1] = 27;
-locNodos[26][0] = -418;locNodos[26][1] = 271;
-locNodos[27][0] = -383;locNodos[27][1] = 244;
-locNodos[28][0] = -140;locNodos[28][1] = 245;
-locNodos[29][0] = -142;locNodos[29][1] = 272;
-locNodos[30][0] = -91;locNodos[30][1] = 244;
-locNodos[31][0] = -94;locNodos[31][1] = 272;
-locNodos[32][0] = 372;locNodos[32][1] = 244;
-locNodos[33][0] = 418;locNodos[33][1] = 272;
+  locNodos[0][0] = -419;locNodos[0][1] = -266;
+  locNodos[1][0] = -382;locNodos[1][1] = -234;
+  locNodos[2][0] = -142;locNodos[2][1] = -267;
+  locNodos[3][0] = -143;locNodos[3][1] = -236;
+  locNodos[4][0] = -92;locNodos[4][1] = -266;
+  locNodos[5][0] = -92;locNodos[5][1] = -234;
+  locNodos[6][0] = 98;locNodos[6][1] = -267;
+  locNodos[7][0] = 98;locNodos[7][1] = -234;
+  locNodos[8][0] = 148;locNodos[8][1] = -266;
+  locNodos[9][0] = 151;locNodos[9][1] = -234;
+  locNodos[10][0] = 374;locNodos[10][1] = -234;
+  locNodos[11][0] = 418;locNodos[11][1] = -267;
+  locNodos[12][0] = -419;locNodos[12][1] = -19;
+  locNodos[13][0] = -383;locNodos[13][1] = -19;
+  locNodos[14][0] = -419;locNodos[14][1] = 27;
+  locNodos[15][0] = -383;locNodos[15][1] = 27;
+  locNodos[16][0] = -142;locNodos[16][1] = -19;
+  locNodos[17][0] = -143;locNodos[17][1] = 27;
+  locNodos[18][0] = -92;locNodos[18][1] = -19;
+  locNodos[19][0] = -94;locNodos[19][1] = 25;
+  locNodos[20][0] = 98;locNodos[20][1] = -19;
+  locNodos[21][0] = 140;locNodos[21][1] = -18;
+  locNodos[22][0] = 374;locNodos[22][1] = -21;
+  locNodos[23][0] = 422;locNodos[23][1] = -21;
+  locNodos[24][0] = 372;locNodos[24][1] = 27;
+  locNodos[25][0] = 418;locNodos[25][1] = 27;
+  locNodos[26][0] = -418;locNodos[26][1] = 271;
+  locNodos[27][0] = -383;locNodos[27][1] = 244;
+  locNodos[28][0] = -140;locNodos[28][1] = 245;
+  locNodos[29][0] = -142;locNodos[29][1] = 272;
+  locNodos[30][0] = -91;locNodos[30][1] = 244;
+  locNodos[31][0] = -94;locNodos[31][1] = 272;
+  locNodos[32][0] = 372;locNodos[32][1] = 244;
+  locNodos[33][0] = 418;locNodos[33][1] = 272;
 
 }
-
-
-
 /*
+
 void PopulateTMatrix(){
 
-	TransitionMatrix[0][1] = 1;
-	TransitionMatrix[1][2] = 1;
-	TransitionMatrix[1][12] = 1;
-	TransitionMatrix[1][15] = 1;
-	TransitionMatrix[2][3] = 1;
-	TransitionMatrix[3][4] = 1;
-	TransitionMatrix[3][17] = 1;
-	TransitionMatrix[4][5] = 1;
-	// 5 -> final
-	TransitionMatrix[6][7] = 1;
-	TransitionMatrix[7][8] = 1;
-	TransitionMatrix[7][17] = 1;
-	TransitionMatrix[8][9] = 1;
-	TransitionMatrix[9][10] = 1;
-	TransitionMatrix[9][12] = 1;
-	TransitionMatrix[9][15] = 1;
-	TransitionMatrix[10][11] = 1;
-	// 11 - > final
-	TransitionMatrix[12][22] = 1;
-	TransitionMatrix[13][2] = 1;
-	TransitionMatrix[13][10] = 1;
-	TransitionMatrix[13][15] = 1;
-	TransitionMatrix[14][2] = 1;
-	TransitionMatrix[14][10] = 1;
-	TransitionMatrix[14][12] = 1;
-	TransitionMatrix[15][19] = 1;
-	TransitionMatrix[16][4] = 1;
-	TransitionMatrix[16][8] = 1;
-	TransitionMatrix[17][21] = 1;
-	TransitionMatrix[18][14] = 1;
-	// 19 -> final
-	TransitionMatrix[20][16] = 1;
-	// 21 -> final
-	// 22 -> final
-	TransitionMatrix[23][13] = 1;
+  TransitionMatrix[0][12] = 1;
+  TransitionMatrix[0][] = 1;
+  TransitionMatrix[0][] = 1;
+  TransitionMatrix[1][] = 1;
+  TransitionMatrix[1][] = 1;
+  TransitionMatrix[1][] = 1;
+  TransitionMatrix[2][] = 1;
+  TransitionMatrix[2][] = 1;
+  TransitionMatrix[2][] = 1;
+  TransitionMatrix[3][] = 1;
+  TransitionMatrix[3][] = 1;
+  TransitionMatrix[3][] = 1;
+  TransitionMatrix[4][] = 1;
+  TransitionMatrix[4][] = 1;
+  TransitionMatrix[4][] = 1;
+  TransitionMatrix[5][] = 1;
+  TransitionMatrix[5][] = 1;
+  TransitionMatrix[5][] = 1;
+  TransitionMatrix[6][] = 1;
+  TransitionMatrix[6][] = 1;
+  TransitionMatrix[6][] = 1;
+  TransitionMatrix[7][] = 1;
+  TransitionMatrix[7][] = 1;
+  TransitionMatrix[7][] = 1;
+  TransitionMatrix[8][] = 1;
+  TransitionMatrix[8][] = 1;
+  TransitionMatrix[8][] = 1;
+  TransitionMatrix[9][] = 1;
+  TransitionMatrix[9][] = 1;
+  TransitionMatrix[9][] = 1;
+  TransitionMatrix[10][] = 1;
+  TransitionMatrix[10][] = 1;
+  TransitionMatrix[10][] = 1;
+  TransitionMatrix[11][] = 1;
+  TransitionMatrix[11][] = 1;
+  TransitionMatrix[11][] = 1;
+  TransitionMatrix[12][] = 1;
+  TransitionMatrix[12][] = 1;
+  TransitionMatrix[12][] = 1;
+  TransitionMatrix[13][] = 1;
+  TransitionMatrix[13][] = 1;
+  TransitionMatrix[13][] = 1;
+  TransitionMatrix[14][] = 1;
+  TransitionMatrix[14][] = 1;
+  TransitionMatrix[14][] = 1;
+  TransitionMatrix[15][] = 1;
+  TransitionMatrix[15][] = 1;
+  TransitionMatrix[15][] = 1;
+  TransitionMatrix[16][] = 1;
+  TransitionMatrix[16][] = 1;
+  TransitionMatrix[16][] = 1;
+  TransitionMatrix[17][] = 1;
+  TransitionMatrix[17][] = 1;
+  TransitionMatrix[17][] = 1;
+  TransitionMatrix[18][] = 1;
+  TransitionMatrix[18][] = 1;
+  TransitionMatrix[18][] = 1;
+  TransitionMatrix[19][] = 1;
+  TransitionMatrix[19][] = 1;
+  TransitionMatrix[19][] = 1;
+  TransitionMatrix[20][] = 1;
+  TransitionMatrix[20][] = 1;
+  TransitionMatrix[20][] = 1;
+  TransitionMatrix[21][] = 1;
+  TransitionMatrix[21][] = 1;
+  TransitionMatrix[21][] = 1;
+  TransitionMatrix[22][] = 1;
+  TransitionMatrix[22][] = 1;
+  TransitionMatrix[22][] = 1;
+  TransitionMatrix[23][] = 1;
+  TransitionMatrix[23][] = 1;
+  TransitionMatrix[23][] = 1;
+  TransitionMatrix[24][] = 1;
+  TransitionMatrix[24][] = 1;
+  TransitionMatrix[24][] = 1;
+  TransitionMatrix[25][] = 1;
+  TransitionMatrix[25][] = 1;
+  TransitionMatrix[25][] = 1;
+  TransitionMatrix[26][] = 1;
+  TransitionMatrix[26][] = 1;
+  TransitionMatrix[26][] = 1;
+  TransitionMatrix[27][] = 1;
+  TransitionMatrix[27][] = 1;
+  TransitionMatrix[27][] = 1;
+  TransitionMatrix[28][] = 1;
+  TransitionMatrix[28][] = 1;
+  TransitionMatrix[28][] = 1;
+  TransitionMatrix[29][] = 1;
+  TransitionMatrix[29][] = 1;
+  TransitionMatrix[29][] = 1;
+  TransitionMatrix[30][] = 1;
+  TransitionMatrix[30][] = 1;
+  TransitionMatrix[30][] = 1;
+  TransitionMatrix[31][] = 1;
+  TransitionMatrix[31][] = 1;
+  TransitionMatrix[31][] = 1;
+  TransitionMatrix[32][] = 1;
+  TransitionMatrix[32][] = 1;
+  TransitionMatrix[32][] = 1;
+  TransitionMatrix[33][] = 1;
+  TransitionMatrix[33][] = 1;
+  TransitionMatrix[33][] = 1;
+
 	
 	cout << "Traffic Transition Matrix with 24 nodes" << endl;
 	  for (int i = 0; i < 24; i++){
@@ -209,8 +275,8 @@ void PopulateTMatrix(){
 	    cout << "\n" << endl;
 	  }
 }
-
 */
+
 
 void drawString(int x, int y, int z, const char* text) {
   glColor3f(1.0f, 1.0f, 1.0f);
