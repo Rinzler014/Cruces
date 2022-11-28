@@ -13,7 +13,7 @@ using namespace std;
 
 class Cubo {
     public:
-        Cubo(int,int, float);
+        Cubo(int,int, float, vector<vector<float>> );
         ~Cubo();
         void draw();
         int update(vector<vector<float>>, vector<vector<int>>, int, float);

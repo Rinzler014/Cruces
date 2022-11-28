@@ -260,7 +260,7 @@ void drawString(int x, int y, int z, const char* text) {
   loadTextureFromFile(filename0, 0);
 
   for (int i = 0; i < NUM_OBJ; i++){
-    objects[i] = new Cubo(DimBoard_X, DimBoard_Z, speed);
+    objects[i] = new Cubo(DimBoard_X, DimBoard_Z, speed,locNodos);
   }
 
 }

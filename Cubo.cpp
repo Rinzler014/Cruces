@@ -3,17 +3,20 @@
 const int NUMNODES = 24;
 int node = 0;
 
-Cubo::Cubo(int dim_x,int dim_z, float vel)
+Cubo::Cubo(int dim_x,int dim_z, float vel, vector<vector<float>> locNodos)
 {
     DimBoard_X = dim_x;
     DimBoard_Z= dim_z;
     //srand(time(nullptr));
     //int c;
 
+    int num_ran=rand()%33;
+
     //Se inicializa una posicion aleatoria dentro del tablero
-    Position[0] = 40;
-    Position[2] = 440;
+    Position[0] = locNodos[num_ran][0];
+    Position[2] = locNodos[num_ran][1];
     //Se inicializa el vector de direccion con un valor aleatorio
+    
     Direction[0] = rand();
     Direction[1] = rand();
     Direction[2] = rand();
