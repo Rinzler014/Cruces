@@ -20,6 +20,8 @@
 #define NTextures 1
 GLuint	texture[NTextures];
 
+
+
 //Variables dimensiones de la pantalla
 int WIDTH = 500;
 int HEIGTH = 500;
@@ -58,6 +60,9 @@ int LightCTRL = 0;
 vector<int> AiNextNode(NUM_OBJ);
 float speed = 0.5;
 
+float pos_sem[2][2] = {{-199, 59}, 
+                        {-72, -68}};
+
 // Localizacion de los nodos
 vector<vector<float>> locNodos(NUM_NODES, vector<float>(2, 0));
 
@@ -90,10 +95,25 @@ void loadTextureFromFile(const char *filename, int index) {
     theTexMap.Reset();
 }
 
-void TrafficLight(int lightcolor){
+float distancia(float posX, float posZ, float posX2, float posZ2) {//Calcula la distancia entre objs
+
+     float dist, dist2;
+     dist = sqrt((pow((posX - posX2), 2)) + (pow((posZ - posZ2), 2)));
+     return (dist);
+}
+
+ float radios(float radio1, float radio2) {//Calcula los radios entre objs
+
+     float totalR;
+     totalR = abs(radio1 + radio2);
+     return (totalR);
+}
+
+void TrafficLight(int lightcolor, float pos_sem[2][2], int n){
 
   glPushMatrix();
-  glTranslatef(0,20,0);
+  glTranslatef(pos_sem[n][0],20,pos_sem[n][1]);
+
   if(lightcolor==0){
     glColor3f(1.0,0.0,0.0);
   }
@@ -101,14 +121,14 @@ void TrafficLight(int lightcolor){
     glColor3f(0.0,1.0,0.0);
   }
   if(lightcolor==2){
-    glColor3f(0.0,0.0,1.0);
+    glColor3f(0.8,0.8,0.3);
   }
-  glutSolidSphere(20,50,50);
+  glutSolidSphere(10,50,50);
   glPopMatrix();
 }
 
 int LightControl(int &lightCTRL){
-  if(lightCTRL==20){
+  if(lightCTRL==500){
     lightCTRL=0;
     Lightcolor ++;
 
@@ -259,6 +279,7 @@ void drawString(int x, int y, int z, const char* text) {
 
   for (int i = 0; i < NUM_OBJ; i++){
     objects[i] = new Cubo(DimBoard_X, DimBoard_Z, speed,locNodos);
+
     Cubo* aux = (Cubo*)objects[i];
     AiNextNode[i] = aux->getininopde();
 
@@ -284,7 +305,9 @@ void display() {
     glEnd();
 	glDisable(GL_TEXTURE_2D);
 
-    TrafficLight(Lightcolor);
+    TrafficLight(Lightcolor, pos_sem, 0);
+    TrafficLight(Lightcolor, pos_sem, 1);
+    
     Lightcolor = LightControl(LightCTRL);
 
 	
@@ -295,16 +318,35 @@ void display() {
   for (int i = 0; i < NUM_OBJ; i++){
     ((Cubo *)objects[i])->draw();
 
-    try
-    {
+    if(AiNextNode[i] == 19) {
+
+      if(Lightcolor == 0) {
+        
+        if(distancia(((Cubo *)objects[i])->getX(), ((Cubo *)objects[i])->getZ(), locNodos[AiNextNode[i]][0], locNodos[AiNextNode[i]][1]) < radios(((Cubo *)objects[i])->getRadio(), 5)) {
+        AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, TransitionMatrix, AiNextNode[i], 0);
+        }
+
+      }
+
+      if(Lightcolor == 1) {
+        
+        if(distancia(((Cubo *)objects[i])->getX(), ((Cubo *)objects[i])->getZ(), locNodos[AiNextNode[i]][0], locNodos[AiNextNode[i]][1]) < radios(((Cubo *)objects[i])->getRadio(), 5)) {
+        AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, TransitionMatrix, AiNextNode[i], speed);
+        }
+        
+      }
+
+      if(Lightcolor == 2) {
+        
+        if(distancia(((Cubo *)objects[i])->getX(), ((Cubo *)objects[i])->getZ(), locNodos[AiNextNode[i]][0], locNodos[AiNextNode[i]][1]) < radios(((Cubo *)objects[i])->getRadio(), 5)) {
+        AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, TransitionMatrix, AiNextNode[i], speed * 2);
+        }
+        
+      }      
+    } else {
       AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, TransitionMatrix, AiNextNode[i], speed);
     }
-    catch(const std::exception& e)
-    {
-      std::cerr << e.what() << '\n';
-    }
-    
-  
+
   }
 
   glutSwapBuffers();
@@ -322,7 +364,7 @@ int main(int argc, char **argv) {
   PopulateLocNodes();
   PopulateTMatrix();
 
-  speed = 0.7;
+  speed = 1.5;
 
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );

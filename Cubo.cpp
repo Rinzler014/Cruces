@@ -1,7 +1,7 @@
 #include "Cubo.h"
 
 const int NUMNODES = 35;
-int node = 0;
+
 
 Cubo::Cubo(int dim_x,int dim_z, float vel, vector<vector<float>> locNodos)
 {
@@ -108,6 +108,7 @@ int retrieveNextnode(int cNode, vector<vector<int>> transitionMatrix) {
 
 int Cubo::update(vector<vector<float>> locNodos, vector<vector<int>> transitionMatrix, int nextNode, float speed) {
 
+
     NodeDirection(nextNode, locNodos, Direction, Position);
     float dist = dist2node(Position, nextNode, locNodos);
 
@@ -126,3 +127,9 @@ int Cubo::update(vector<vector<float>> locNodos, vector<vector<int>> transitionM
 
 
 int Cubo::getininopde() { return (nnode); }
+
+float Cubo::getRadio() { return (radio); }
+float Cubo::getX() { return (Position[0]); }
+float Cubo::getZ() { return (Position[2]); }
+
+int Cubo::getidn() { return (idn); }

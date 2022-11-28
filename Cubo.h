@@ -13,16 +13,22 @@ using namespace std;
 
 class Cubo {
     public:
+        
+        float Position[3] = {0.0, 5.0, 0.0};
+        float Direction[3] = {0.0, 5.0, 0.0};
+
+        int idn;
+
         Cubo(int,int, float, vector<vector<float>> );
         ~Cubo();
         void draw();
         int update(vector<vector<float>>, vector<vector<int>>, int, float);
 
-        void getX();
-        void getY();
-        void getZ();
+        float getX();
+        float getZ();
+        int getidn();
 
-        void getRadio();
+        float getRadio();
         int getininopde();
 
     protected:
@@ -40,9 +46,6 @@ class Cubo {
                   0,1,2,3, 0,3,7,4, 0,4,5,1,
                   6,2,1,5, 6,5,4,7, 6,7,3,2  };
 
-        //Vector de direccion
-        float Position[3] = {0.0, 5.0, 0.0};
-        float Direction[3] = {0.0, 5.0, 0.0};
         int DimBoard_X;
         int DimBoard_Z;
 
