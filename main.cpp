@@ -347,7 +347,7 @@ void display() {
     ((Cubo *)objects[i])->draw();
     cout << "Agente: " << i << " Nodo: " << AiNextNode[i] << endl << endl;
 
-    for(int j = 0; j < NUM_NODES; j++){
+    for(int j = 0; j < NUM_OBJ; j++){
       
       if(i == j){
         continue;
@@ -362,12 +362,17 @@ void display() {
           float dist2nodeCar = distance(((Cubo *)objects[i])->getX(), ((Cubo *)objects[i])->getZ(), locNodos[AiNextNode[i]][0], locNodos[AiNextNode[i]][0]);
           float dist2nodeCar2 = distance(((Cubo *)objects[j])->getX(), ((Cubo *)objects[j])->getZ(), locNodos[AiNextNode[j]][0], locNodos[AiNextNode[j]][0]);
 
+          cout << "Distancia carro 1: " << dist2nodeCar << endl;
+          cout << "Distancia carro 2: " << dist2nodeCar2 << endl;
+
           if(dist2nodeCar < dist2nodeCar2){
             AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], speed);
           } else {
             AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], 0);
           }
           
+        } else {
+          AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], speed);
         }
 
       }
