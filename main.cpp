@@ -20,17 +20,17 @@
 #define NTextures 1
 GLuint	texture[NTextures];
 
+using namespace std;
 
-
-//Variables dimensiones de la pantalla
+// Global variables
+// Screen dimension constants
 int WIDTH = 500;
 int HEIGTH = 500;
-//Variables para establecer los valores de gluPerspective
+// gluPerspective values
 float FOVY = 65.0;
 float ZNEAR = 0.01;
 float ZFAR = 900.0;
-//Variables para definir la posicion del observador
-//gluLookAt(EYE_X,EYE_Y,EYE_Z,CENTER_X,CENTER_Y,CENTER_Z,UP_X,UP_Y,UP_Z)
+// Eye position
 float EYE_X = 0.0;
 float EYE_Y = 810.0;
 float EYE_Z = 100.0;
@@ -40,7 +40,7 @@ float CENTER_Z = 0;
 float UP_X = 0;
 float UP_Y = 1;
 float UP_Z = 0;
-//Variables para dibujar los ejes del sistema
+// Axis variables
 float X_MIN = -500;
 float X_MAX = 500;
 float Y_MIN = -500;
@@ -48,33 +48,49 @@ float Y_MAX = 500;
 float Z_MIN = -500;
 float Z_MAX = 500;
 
-//Size del tablero
+// Board Size
 int DimBoard_X = 450;
 int DimBoard_Z = 300;
 
-//Ligther control
-int Lightcolor = 0;
+// Ligther control
+vector<int> lightColors = {0, 1};
 int LightCTRL = 0;
 
 // Control variables of each agent
 vector<int> AiNextNode(NUM_OBJ);
 float speed = 0.5;
 
-float pos_sem[2][2] = {{-199, 59}, 
-                        {-72, -68}};
+// Traffic light positions
+vector<vector<float>> trafficLightsPos = {{-72, -68}, 
+                                          {-199, 59}};
 
-// Localizacion de los nodos
+// Nodes locations
 vector<vector<float>> locNodos(NUM_NODES, vector<float>(2, 0));
 
+// Transition matrix
 vector<vector<int>> TransitionMatrix(NUM_NODES * 2, vector<int>(NUM_NODES * 2, 0));
 
+// Nodes connections with traffic lights
 vector<vector<int>> trafficLight1 = {{18, 19}, {0}};
 vector<vector<int>> trafficLight2 = {{16, 17}, {0}};
 
+// Cars vector
 vector<void *> objects(NUM_OBJ);
 
+// File name of the map texture
 const char* filename0 = "map.bmp";
 
+// Function to calculate the distance bewtween two points
+float distance(float x1, float z1, float x2, float z2){
+    return sqrt(pow(x2 - x1, 2) + pow(z2 - z1, 2));
+}
+
+// Function to calculate the sum of radio bethween two points
+float sumRadio(float r1, float r2){
+    return r1 + r2;
+}
+
+// Function to load the map texture
 void loadTextureFromFile(const char *filename, int index) {
 
 	glClearColor (0.0, 0.0, 0.0, 0.0);
@@ -98,39 +114,50 @@ void loadTextureFromFile(const char *filename, int index) {
     theTexMap.Reset();
 }
 
-
-void TrafficLight(int lightcolor, float pos_sem[2][2], int n){
+// Function to draw the traffic light
+void TrafficLight(int lightcolor, vector<vector<float>> trafficLightsPos, int trafficLight){
 
   glPushMatrix();
-  glTranslatef(pos_sem[n][0],20,pos_sem[n][1]);
+  glTranslatef(trafficLightsPos[trafficLight][0],20,trafficLightsPos[trafficLight][1]);
 
   if(lightcolor==0){
     glColor3f(1.0,0.0,0.0);
   }
   if(lightcolor==1){
-    glColor3f(0.0,1.0,0.0);
+    glColor3f(0.8,0.8,0.3);
   }
   if(lightcolor==2){
-    glColor3f(0.8,0.8,0.3);
+    glColor3f(0.0, 1.0, 0.0);
   }
   glutSolidSphere(10,50,50);
   glPopMatrix();
 }
 
-int LightControl(int &lightCTRL){
+// Function to control the traffic light color
+vector<int> LightControl(int &lightCTRL){
+  
   if(lightCTRL==500){
     lightCTRL=0;
-    Lightcolor ++;
+    lightColors[0]++;
+    lightColors[1]++;
 
   }else{
     LightCTRL++;
   }
-  if(Lightcolor==3){
-    Lightcolor=0;
+
+  if(lightColors[0] == 3){
+    lightColors[0] = 0;
   }
-  return Lightcolor;
+
+  if(lightColors[1] == 3){
+    lightColors[1] = 0;
+  }
+  
+  return lightColors;
+
 }
 
+// Function to populate the locations of the nodes
 void PopulateLocNodes(){
 	
   locNodos[0][0] = -419;locNodos[0][1] = -266;
@@ -170,7 +197,7 @@ void PopulateLocNodes(){
 
 }
 
-
+// Function to populate the available conections between nodes
 void PopulateTMatrix(){
 
   TransitionMatrix[0][12] = 1;
@@ -240,7 +267,7 @@ void PopulateTMatrix(){
   */
 }
 
-
+// Function to draw a character in the screen
 void drawString(int x, int y, int z, const char* text) {
   glColor3f(1.0f, 1.0f, 1.0f);
  
@@ -253,6 +280,7 @@ void drawString(int x, int y, int z, const char* text) {
   }
 }
 
+// Function to initialize the OpenGL window
  void init() {
 	
   glMatrixMode(GL_PROJECTION);
@@ -277,6 +305,7 @@ void drawString(int x, int y, int z, const char* text) {
 
 }
 
+// Function to cycle the control variables
 void display() {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -295,40 +324,51 @@ void display() {
     glEnd();
 	glDisable(GL_TEXTURE_2D);
 
-  TrafficLight(Lightcolor, pos_sem, 0);
-  TrafficLight(Lightcolor, pos_sem, 1);
-    
-  trafficLight1[1][0] = LightControl(LightCTRL);
-  trafficLight2[1][0] = LightControl(LightCTRL);
-	
+
+  // Draw the traffic lights
+  TrafficLight(lightColors[0], trafficLightsPos, 0);
+  TrafficLight(lightColors[1], trafficLightsPos, 1);
+  
+  // Assign the traffic light color to the traffic light
+  trafficLight1[1][0] = LightControl(LightCTRL)[0];
+  trafficLight2[1][0] = LightControl(LightCTRL)[1];
+
+  // Draw the nodes number in the screen
 	for (int i = 0; i < NUM_NODES - 1; i++){
 		drawString(locNodos[i][0], 10, locNodos[i][1], to_string(i).c_str());
 	}
 
+  // Draw and update the objects 
   for (int i = 0; i < NUM_OBJ; i++){
-    ((Cubo *)objects[i])->draw();
 
+    ((Cubo *)objects[i])->draw();
     cout << "Agente: " << i << " Nodo: " << AiNextNode[i] << endl << endl;
 
+  
     AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], speed);
 
   }
 
+  //
+
+  // Release the buffer to screen
   glutSwapBuffers();
   Sleep(5);
 
 }
 
+// Function to cycle the display when the keyboard is IDLE
 void idle(){
      display();
 }
 
-
+// Main function
 int main(int argc, char **argv) {
 
   PopulateLocNodes();
   PopulateTMatrix();
 
+  // Assign Speed to the objects
   speed = 2.5;
 
   glutInit(&argc, argv);

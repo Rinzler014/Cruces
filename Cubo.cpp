@@ -6,47 +6,52 @@ const int NUMNODES = 35;
 using namespace std;
 
 
-Cubo::Cubo(int dim_x,int dim_z, float vel, vector<vector<float>> locNodos)
-{
+Cubo::Cubo(int dim_x,int dim_z, float speed, vector<vector<float>> locNodos) {
+
+    // Set the dimensions of the map
     DimBoard_X = dim_x;
     DimBoard_Z= dim_z;
-    //srand(time(nullptr));
-    //int c;
 
+    // Randomly generate the location of the car in a node
     int num_ran = rand() % 33;
     nnode = num_ran;
-    //Se inicializa una posicion aleatoria dentro del tablero
+    
+    //Inits the position of the car in a valid node
     Position[0] = locNodos[num_ran][0];
     Position[2] = locNodos[num_ran][1];
-    //Se inicializa el vector de direccion con un valor aleatorio
+    
+    //Inits the direction of the car in a valid direction
     Direction[0] = rand();
     Direction[1] = rand();
     Direction[2] = rand();
-    //Se normaliza el vector de direccion
+
+    //Normalize the direction vector
     float m = sqrt(Direction[0]*Direction[0] + Direction[1]*Direction[1] + Direction[2]*Direction[2]);
     Direction[0] /= m;
     Direction[1] /= m;
     Direction[2] /= m;
-    //se multiplica el vector de direccion por la magnitud de la velocidad
-    Direction[0] *= vel;
-    Direction[1] *= vel;
-    Direction[2] *= vel;
+    //Cross the speed with the direction vector
+    Direction[0] *= speed;
+    Direction[1] *= speed;
+    Direction[2] *= speed;
 
     cout << Direction[0] << endl;
     cout << Direction[2] << endl;
+
+    radio = sqrt(3 * (10 * 10));
+
 }
 
-Cubo::~Cubo()
-{
-    //dtor
+Cubo::~Cubo() {
+    //Destructor
 }
 
-void Cubo::draw()
-{
+void Cubo::draw() {
+
     glPushMatrix();
     glTranslatef(Position[0], Position[1], Position[2]);
     glScaled(10,10,10);
-    //Se dibuja el cubo
+    //The cube is drawn
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, vertexCoords);
@@ -56,6 +61,7 @@ void Cubo::draw()
     glDisableClientState(GL_COLOR_ARRAY);
 
     glPopMatrix();
+
 }
 
 //Calculate the distance to a node
@@ -79,24 +85,31 @@ int findIdxNode(int targetNode, vector<int> nodeSeq) {
     return 0;
 }
 
+
+// Function to normalize a direction vector
 void L2Norm(float Direction[3]){
+    
     float m = sqrt(Direction[0]*Direction[0] + Direction[1]*Direction[1] + Direction[2]*Direction[2]);
     m += 0.00001;
     Direction[0] /= m;
     Direction[1] /= m;
     Direction[2] /= m;
+
 }
 
+// Function to set the direction of the car
 void NodeDirection(int targetNode, vector<vector<float>> locNodos, float Direction[3], float Position[3]){
     Direction[0] = locNodos[targetNode][0]-Position[0];
     Direction[2] = locNodos[targetNode][1]-Position[2];
     L2Norm(Direction);
 }
 
+// Function to set the next node valid to go
 int retrieveNextnode(int cNode, vector<vector<int>> transitionMatrix) {
     vector<int> aux(NUMNODES);
     int k = 0;
 
+    // Generate a list of node options among the valid ones in the transition matrix 
     for (int i = 0; i < NUMNODES; i++) {
         if(transitionMatrix[cNode][i] == 1) {
             aux[k] = i;
@@ -109,39 +122,41 @@ int retrieveNextnode(int cNode, vector<vector<int>> transitionMatrix) {
     
 }
 
+// Function to update the position of the car
 int Cubo::update(vector<vector<float>> locNodos, vector<vector<int>> trafficLight1, vector<vector<int>> trafficLight2, vector<vector<int>> transitionMatrix, int nextNode, float speed) {
-
 
     NodeDirection(nextNode, locNodos, Direction, Position);
     float dist = dist2node(Position, nextNode, locNodos);
 
     cout << "Semaforo 1: " << trafficLight1[1][0] << endl;
+    cout << "Semaforo 2: " << trafficLight2[1][0] << endl;
 
+    // Condition to check if the car is in the intersection
     if(dist < 5){
 
-        if(find(trafficLight1[0].begin(), trafficLight1[0].end(), nextNode) != trafficLight1[0].end()){
+        nextNode = retrieveNextnode(nextNode, transitionMatrix);
 
-            if(trafficLight1[1][0] == 0){
+    } else {
 
-                Position[0] += Direction[0] * 0;
-                Position[2] += Direction[2] * 0;
-            
+        if(dist < 7) {
+
+            // Conditional to check if a car is near a traffic light
+            if(find(trafficLight1[0].begin(), trafficLight1[0].end(), nextNode) != trafficLight1[0].end()){
+
+                if(trafficLight1[1][0] == 0){
+
+                    Position[0] += Direction[0] * 0;
+                    Position[2] += Direction[2] * 0;
+                
+                }       
             }
 
-            else if (trafficLight1[1][0] == 1){
-                nextNode = retrieveNextnode(nextNode, transitionMatrix);
-            }
-
-            else if(trafficLight1[1][0] == 2) {
-                nextNode = retrieveNextnode(nextNode, transitionMatrix);
-            }
-
-        } else {
-            nextNode = retrieveNextnode(nextNode, transitionMatrix);
         }
-
     }
 
+    
+
+    // Conditional to check if a car should low the speed
     if(dist < 100 && trafficLight1[1][0] == 2) {
 
         if(find(trafficLight1[0].begin(), trafficLight1[0].end(), nextNode) != trafficLight1[0].end()){
@@ -151,6 +166,7 @@ int Cubo::update(vector<vector<float>> locNodos, vector<vector<int>> trafficLigh
 
     }
 
+    // Make the car move on the road
     Position[0] += Direction[0] * speed;
     Position[2] += Direction[2] * speed;
 
@@ -159,10 +175,17 @@ int Cubo::update(vector<vector<float>> locNodos, vector<vector<int>> trafficLigh
 }
 
 
+// Function to return the position of the car
 int Cubo::getininopde() { return (nnode); }
 
+// Function to return the radio of the car
 float Cubo::getRadio() { return (radio); }
+
+// Function to return the X coordinate of the car
 float Cubo::getX() { return (Position[0]); }
+
+// Function to return the Y coordinate of the car
 float Cubo::getZ() { return (Position[2]); }
 
+// Function to return the id of the car
 int Cubo::getidn() { return (idn); }

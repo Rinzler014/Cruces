@@ -13,20 +13,18 @@ using namespace std;
 
 class Cubo {
     public:
-        
-        
 
         int idn;
 
         Cubo(int,int, float, vector<vector<float>> );
         ~Cubo();
+        
         void draw();
         int update(vector<vector<float>>, vector<vector<int>>, vector<vector<int>>,vector<vector<int>>, int, float);
 
         float getX();
         float getZ();
         int getidn();
-
         float getRadio();
         int getininopde();
 
