@@ -64,6 +64,9 @@ float speed = 0.5;
 vector<vector<float>> trafficLightsPos = {{-72, -68}, 
                                           {-199, 59}};
 
+//Vector of booleans to store if there is a collision
+vector<bool> collisions(NUM_OBJ, false);
+
 // Nodes locations
 vector<vector<float>> locNodos(NUM_NODES, vector<float>(2, 0));
 
@@ -344,8 +347,34 @@ void display() {
     ((Cubo *)objects[i])->draw();
     cout << "Agente: " << i << " Nodo: " << AiNextNode[i] << endl << endl;
 
+    for(int j = 0; j < NUM_NODES; j++){
+      
+      if(i == j){
+        continue;
+
+      } else {
+
+        float carDist = distance(((Cubo *)objects[i])->getX(), ((Cubo *)objects[i])->getZ(), ((Cubo *)objects[j])->getX(), ((Cubo *)objects[j])->getZ() );
+        float radios = (sumRadio(((Cubo *)objects[i])->getRadio(), ((Cubo *)objects[j])->getRadio()) + 2);
+
+        if(carDist < radios) {
+
+          float dist2nodeCar = distance(((Cubo *)objects[i])->getX(), ((Cubo *)objects[i])->getZ(), locNodos[AiNextNode[i]][0], locNodos[AiNextNode[i]][0]);
+          float dist2nodeCar2 = distance(((Cubo *)objects[j])->getX(), ((Cubo *)objects[j])->getZ(), locNodos[AiNextNode[j]][0], locNodos[AiNextNode[j]][0]);
+
+          if(dist2nodeCar < dist2nodeCar2){
+            AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], speed);
+          } else {
+            AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], 0);
+          }
+          
+        }
+
+      }
+
+    }
   
-    AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], speed);
+    
 
   }
 
