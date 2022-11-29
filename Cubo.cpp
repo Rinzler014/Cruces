@@ -1,6 +1,9 @@
 #include "Cubo.h"
+#include "bits/stdc++.h"
 
 const int NUMNODES = 35;
+
+using namespace std;
 
 
 Cubo::Cubo(int dim_x,int dim_z, float vel, vector<vector<float>> locNodos)
@@ -106,20 +109,50 @@ int retrieveNextnode(int cNode, vector<vector<int>> transitionMatrix) {
     
 }
 
-int Cubo::update(vector<vector<float>> locNodos, vector<vector<int>> transitionMatrix, int nextNode, float speed) {
+int Cubo::update(vector<vector<float>> locNodos, vector<vector<int>> trafficLight1, vector<vector<int>> trafficLight2, vector<vector<int>> transitionMatrix, int nextNode, float speed) {
 
 
     NodeDirection(nextNode, locNodos, Direction, Position);
     float dist = dist2node(Position, nextNode, locNodos);
 
+    cout << "Semaforo 1: " << trafficLight1[1][0] << endl;
+
     if(dist < 5){
-        nextNode = retrieveNextnode(nextNode, transitionMatrix);
+
+        if(find(trafficLight1[0].begin(), trafficLight1[0].end(), nextNode) != trafficLight1[0].end()){
+
+            if(trafficLight1[1][0] == 0){
+
+                Position[0] += Direction[0] * 0;
+                Position[2] += Direction[2] * 0;
+            
+            }
+
+            else if (trafficLight1[1][0] == 1){
+                nextNode = retrieveNextnode(nextNode, transitionMatrix);
+            }
+
+            else if(trafficLight1[1][0] == 2) {
+                nextNode = retrieveNextnode(nextNode, transitionMatrix);
+            }
+
+        } else {
+            nextNode = retrieveNextnode(nextNode, transitionMatrix);
+        }
+
+    }
+
+    if(dist < 100 && trafficLight1[1][0] == 2) {
+
+        if(find(trafficLight1[0].begin(), trafficLight1[0].end(), nextNode) != trafficLight1[0].end()){
+            Position[0] += Direction[0] * (speed / 2);
+            Position[2] += Direction[2] * (speed / 2);
+        }
+
     }
 
     Position[0] += Direction[0] * speed;
     Position[2] += Direction[2] * speed;
-
-    cout << "Posicion: " << Position[0] << " " << Position[2] << " " << "NNode: " << nextNode << endl;
 
     return nextNode;
 

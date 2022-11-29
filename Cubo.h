@@ -14,15 +14,14 @@ using namespace std;
 class Cubo {
     public:
         
-        float Position[3] = {0.0, 5.0, 0.0};
-        float Direction[3] = {0.0, 5.0, 0.0};
+        
 
         int idn;
 
         Cubo(int,int, float, vector<vector<float>> );
         ~Cubo();
         void draw();
-        int update(vector<vector<float>>, vector<vector<int>>, int, float);
+        int update(vector<vector<float>>, vector<vector<int>>, vector<vector<int>>,vector<vector<int>>, int, float);
 
         float getX();
         float getZ();
@@ -49,8 +48,10 @@ class Cubo {
         int DimBoard_X;
         int DimBoard_Z;
 
+        float Position[3] = {0.0, 5.0, 0.0};
+        float Direction[3] = {0.0, 5.0, 0.0};
+
         int radio;
-        int dist_to_node;
         int nnode;
 
 };

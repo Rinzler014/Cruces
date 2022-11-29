@@ -68,6 +68,9 @@ vector<vector<float>> locNodos(NUM_NODES, vector<float>(2, 0));
 
 vector<vector<int>> TransitionMatrix(NUM_NODES * 2, vector<int>(NUM_NODES * 2, 0));
 
+vector<vector<int>> trafficLight1 = {{18, 19}, {0}};
+vector<vector<int>> trafficLight2 = {{16, 17}, {0}};
+
 vector<void *> objects(NUM_OBJ);
 
 const char* filename0 = "map.bmp";
@@ -95,19 +98,6 @@ void loadTextureFromFile(const char *filename, int index) {
     theTexMap.Reset();
 }
 
-float distancia(float posX, float posZ, float posX2, float posZ2) {//Calcula la distancia entre objs
-
-     float dist, dist2;
-     dist = sqrt((pow((posX - posX2), 2)) + (pow((posZ - posZ2), 2)));
-     return (dist);
-}
-
- float radios(float radio1, float radio2) {//Calcula los radios entre objs
-
-     float totalR;
-     totalR = abs(radio1 + radio2);
-     return (totalR);
-}
 
 void TrafficLight(int lightcolor, float pos_sem[2][2], int n){
 
@@ -237,6 +227,8 @@ void PopulateTMatrix(){
   TransitionMatrix[32][30] = 1;
   TransitionMatrix[33][25] = 1; 
 	
+  /*
+
 	cout << "Traffic Transition Matrix with 24 nodes" << endl;
 	  for (int i = 0; i < 24; i++){
 	    for (int j = 0; j < 24; j++){
@@ -244,8 +236,9 @@ void PopulateTMatrix(){
 	    }
 	    cout << "\n" << endl;
 	  }
+  
+  */
 }
-
 
 
 void drawString(int x, int y, int z, const char* text) {
@@ -278,11 +271,8 @@ void drawString(int x, int y, int z, const char* text) {
   loadTextureFromFile(filename0, 0);
 
   for (int i = 0; i < NUM_OBJ; i++){
-    objects[i] = new Cubo(DimBoard_X, DimBoard_Z, speed,locNodos);
-
-    Cubo* aux = (Cubo*)objects[i];
-    AiNextNode[i] = aux->getininopde();
-
+    objects[i] = new Cubo(DimBoard_X, DimBoard_Z, speed, locNodos);
+    AiNextNode[i] = ((Cubo*)objects[i])->getininopde();
   }
 
 }
@@ -305,11 +295,11 @@ void display() {
     glEnd();
 	glDisable(GL_TEXTURE_2D);
 
-    TrafficLight(Lightcolor, pos_sem, 0);
-    TrafficLight(Lightcolor, pos_sem, 1);
+  TrafficLight(Lightcolor, pos_sem, 0);
+  TrafficLight(Lightcolor, pos_sem, 1);
     
-    Lightcolor = LightControl(LightCTRL);
-
+  trafficLight1[1][0] = LightControl(LightCTRL);
+  trafficLight2[1][0] = LightControl(LightCTRL);
 	
 	for (int i = 0; i < NUM_NODES - 1; i++){
 		drawString(locNodos[i][0], 10, locNodos[i][1], to_string(i).c_str());
@@ -318,34 +308,9 @@ void display() {
   for (int i = 0; i < NUM_OBJ; i++){
     ((Cubo *)objects[i])->draw();
 
-    if(AiNextNode[i] == 19) {
+    cout << "Agente: " << i << " Nodo: " << AiNextNode[i] << endl << endl;
 
-      if(Lightcolor == 0) {
-        
-        if(distancia(((Cubo *)objects[i])->getX(), ((Cubo *)objects[i])->getZ(), locNodos[AiNextNode[i]][0], locNodos[AiNextNode[i]][1]) < radios(((Cubo *)objects[i])->getRadio(), 5)) {
-        AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, TransitionMatrix, AiNextNode[i], 0);
-        }
-
-      }
-
-      if(Lightcolor == 1) {
-        
-        if(distancia(((Cubo *)objects[i])->getX(), ((Cubo *)objects[i])->getZ(), locNodos[AiNextNode[i]][0], locNodos[AiNextNode[i]][1]) < radios(((Cubo *)objects[i])->getRadio(), 5)) {
-        AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, TransitionMatrix, AiNextNode[i], speed);
-        }
-        
-      }
-
-      if(Lightcolor == 2) {
-        
-        if(distancia(((Cubo *)objects[i])->getX(), ((Cubo *)objects[i])->getZ(), locNodos[AiNextNode[i]][0], locNodos[AiNextNode[i]][1]) < radios(((Cubo *)objects[i])->getRadio(), 5)) {
-        AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, TransitionMatrix, AiNextNode[i], speed * 2);
-        }
-        
-      }      
-    } else {
-      AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, TransitionMatrix, AiNextNode[i], speed);
-    }
+    AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], speed);
 
   }
 
@@ -364,7 +329,7 @@ int main(int argc, char **argv) {
   PopulateLocNodes();
   PopulateTMatrix();
 
-  speed = 1.5;
+  speed = 2.5;
 
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
