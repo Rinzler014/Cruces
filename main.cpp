@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <iostream>
 #include <string>
+#include <fstream>
 
 #include <chrono>
 #include <ctime>
@@ -349,10 +350,10 @@ void display() {
   trafficLight1[1][0] = LightControl(LightCTRL)[0];
   trafficLight2[1][0] = LightControl(LightCTRL)[1];
 
-  // Draw the nodes number in the screen
-	for (int i = 0; i < NUM_NODES - 1; i++){
-		drawString(locNodos[i][0], 10, locNodos[i][1], to_string(i).c_str());
-	}
+  // // Draw the nodes number in the screen
+	// for (int i = 0; i < NUM_NODES - 1; i++){
+	// 	drawString(locNodos[i][0], 10, locNodos[i][1], to_string(i).c_str());
+	// }
 
   // Draw and update the objects 
   for (int i = 0; i < NUM_OBJ; i++){
@@ -434,6 +435,14 @@ void display() {
       crosses1 += ((Cubo *)objects[i])->trafficLight1Crosses;
       crosses2 += ((Cubo *)objects[i])->trafficLight2Crosses;
     }
+
+    ofstream stats;
+
+    stats.open("stats.txt", std::ios_base::app);
+    stats << "Traffic Light 1 crosses: " << crosses1 << endl;
+    stats << "Traffic Light 2 crosses: " << crosses2 << endl;
+
+    stats.close();
 
     cout << "Traffic Light 1 crosses: " << crosses1 << endl;
     cout << "Traffic Light 2 crosses: " << crosses2 << endl;

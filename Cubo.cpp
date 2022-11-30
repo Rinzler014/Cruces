@@ -1,7 +1,7 @@
 #include "Cubo.h"
+#include <bits/stdc++.h>
 
 const int NUMNODES = 35;
-
 
 using namespace std;
 
@@ -201,7 +201,7 @@ int Cubo::update(vector<vector<float>> locNodos, vector<vector<int>> trafficLigh
     // Make the car move on the road
     Position[0] += Direction[0] * speed;
     Position[2] += Direction[2] * speed;
-    
+
     nnode = nextNode;
     return nextNode;
 
