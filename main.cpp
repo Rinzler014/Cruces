@@ -18,7 +18,7 @@
 
 #include "RgbImage.h"
 
-#define NUM_OBJ 15
+#define NUM_OBJ 20
 #define NUM_NODES 35
 
 #define NTextures 1
@@ -64,7 +64,7 @@ int LightCTRL = 0;
 
 // Control variables of each agent
 vector<int> AiNextNode(NUM_OBJ);
-float speed = 1;
+float speed = 10;
 
 // Traffic light positions
 vector<vector<float>> trafficLightsPos = {{-72, -68}, 
@@ -383,8 +383,8 @@ void display() {
                   float dist2nodeCar = distance(((Cubo*)objects[i])->getX(), ((Cubo*)objects[i])->getZ(), locNodos[AiNextNode[i]][0], locNodos[AiNextNode[i]][0]);
                   float dist2nodeCar2 = distance(((Cubo*)objects[j])->getX(), ((Cubo*)objects[j])->getZ(), locNodos[AiNextNode[j]][0], locNodos[AiNextNode[j]][0]);
 
-                  //if (dist2nodeCar < dist2nodeCar2) {
-                  if ( ((Cubo*)objects[i])->getidn() > ((Cubo*)objects[j])->getidn() ){
+                  if (dist2nodeCar <= dist2nodeCar2) {
+                  //if ( ((Cubo*)objects[i])->getidn() > ((Cubo*)objects[j])->getidn() ){
                       //AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], speed);
                       CarComp[i][j] = 1;
                   }
