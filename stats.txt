@@ -1,1 +1,15 @@
+Traffic Light 1 crosses: 9
+Traffic Light 2 crosses: 12
 
+Traffic Light 1 crosses: 68
+Traffic Light 2 crosses: 59
+
+Traffic Light 1 crosses: 87
+Traffic Light 2 crosses: 84
+
+Traffic Light 1 crosses: 101
+Traffic Light 2 crosses: 81Objects Num: 22
+
+
+Traffic Light 1 crosses: 78
+Traffic Light 2 crosses: 85 Objects Num: 25

@@ -19,7 +19,7 @@
 
 #include "RgbImage.h"
 
-#define NUM_OBJ 20
+#define NUM_OBJ 24
 #define NUM_NODES 35
 
 #define NTextures 1
@@ -54,6 +54,8 @@ float Y_MIN = -500;
 float Y_MAX = 500;
 float Z_MIN = -500;
 float Z_MAX = 500;
+
+
 
 // Board Size
 int DimBoard_X = 450;
@@ -91,8 +93,9 @@ int crosses2 = 0;
 // Cars vector
 vector<void *> objects(NUM_OBJ);
 
+
 // Car comparator array
-int CarComp[NUM_OBJ][NUM_OBJ];
+vector<vector<int>> CarComp(NUM_OBJ, vector<int>(NUM_OBJ, 0));
 
 // Variable to check the collision between car i and j
 int compCarICarK = 1;
@@ -439,8 +442,9 @@ void display() {
     ofstream stats;
 
     stats.open("stats.txt", std::ios_base::app);
+    stats << endl;
     stats << "Traffic Light 1 crosses: " << crosses1 << endl;
-    stats << "Traffic Light 2 crosses: " << crosses2 << endl;
+    stats << "Traffic Light 2 crosses: " << crosses2 << " Objects Num: "  << NUM_OBJ << endl; 
 
     stats.close();
 
@@ -468,12 +472,15 @@ void idle(){
 
 // Main function
 int main(int argc, char **argv) {
+  
+  
 
   PopulateLocNodes();
   PopulateTMatrix();
 
   // Assign Speed to the objects
   speed = 1;
+  
 
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
