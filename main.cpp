@@ -14,7 +14,7 @@
 
 #include "RgbImage.h"
 
-#define NUM_OBJ 2
+#define NUM_OBJ 7
 #define NUM_NODES 35
 
 #define NTextures 1
@@ -74,7 +74,7 @@ vector<vector<float>> locNodos(NUM_NODES, vector<float>(2, 0));
 vector<vector<int>> TransitionMatrix(NUM_NODES * 2, vector<int>(NUM_NODES * 2, 0));
 
 // Nodes connections with traffic lights
-vector<vector<int>> trafficLight1 = {{18, 19}, {0}};
+vector<vector<int>> trafficLight1 = {{18, 15}, {0}};
 vector<vector<int>> trafficLight2 = {{16, 17}, {0}};
 
 // Cars vector
@@ -123,6 +123,15 @@ void TrafficLight(int lightcolor, vector<vector<float>> trafficLightsPos, int tr
   glPushMatrix();
   glTranslatef(trafficLightsPos[trafficLight][0],20,trafficLightsPos[trafficLight][1]);
 
+  // Traffic light base
+  /*
+  
+    0 = Rojo
+    1 = Amarillo
+    2 = Verde
+  
+  */
+
   if(lightcolor==0){
     glColor3f(1.0,0.0,0.0);
   }
@@ -139,7 +148,7 @@ void TrafficLight(int lightcolor, vector<vector<float>> trafficLightsPos, int tr
 // Function to control the traffic light color
 vector<int> LightControl(int &lightCTRL){
   
-  if(lightCTRL==500){
+  if(lightCTRL==10000){
     lightCTRL=0;
     lightColors[0]++;
     lightColors[1]++;
@@ -352,10 +361,11 @@ void display() {
       if(i == j){
         continue;
 
-      } else {
+      } 
+      else {
 
         float carDist = distance(((Cubo *)objects[i])->getX(), ((Cubo *)objects[i])->getZ(), ((Cubo *)objects[j])->getX(), ((Cubo *)objects[j])->getZ() );
-        float radios = (sumRadio(((Cubo *)objects[i])->getRadio(), ((Cubo *)objects[j])->getRadio()) + 2);
+        float radios = sumRadio(((Cubo *)objects[i])->getRadio(), ((Cubo *)objects[j])->getRadio()) + 2;
 
         if(carDist < radios) {
 
@@ -403,7 +413,7 @@ int main(int argc, char **argv) {
   PopulateTMatrix();
 
   // Assign Speed to the objects
-  speed = 2.5;
+  speed = 1;
 
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );

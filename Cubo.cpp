@@ -131,37 +131,36 @@ int Cubo::update(vector<vector<float>> locNodos, vector<vector<int>> trafficLigh
     cout << "Semaforo 1: " << trafficLight1[1][0] << endl;
     cout << "Semaforo 2: " << trafficLight2[1][0] << endl;
 
+    // Conditional to check if a car should low the speed
+    if(dist < 100 && trafficLight1[1][0] == 1) {
+
+        if(find(trafficLight1[0].begin(), trafficLight1[0].end(), nextNode) != trafficLight1[0].end()){
+            Position[0] -= Direction[0] * (speed / 2);
+            Position[2] -= Direction[2] * (speed / 2);
+
+            cout << Direction[0] << endl;
+            cout << Direction[2] << endl;
+
+        }
+
+    }
+
     // Condition to check if the car is in the intersection
     if(dist < 5){
 
-        nextNode = retrieveNextnode(nextNode, transitionMatrix);
+        if(find(trafficLight1[0].begin(), trafficLight1[0].end(), nextNode) != trafficLight1[0].end() && (trafficLight1[1][0] == 0 ||trafficLight1[1][0] == 2)){
 
-    } else {
-
-        if(dist < 7) {
-
-            // Conditional to check if a car is near a traffic light
-            if(find(trafficLight1[0].begin(), trafficLight1[0].end(), nextNode) != trafficLight1[0].end()){
-
-                if(trafficLight1[1][0] == 0){
-
-                    Position[0] += Direction[0] * 0;
-                    Position[2] += Direction[2] * 0;
-                
-                }       
+            if(trafficLight1[1][0] == 0){
+                Position[0] += Direction[0] * 0;
+                Position[2] += Direction[2] * 0;    
             }
 
-        }
-    }
+            if(trafficLight1[1][0] == 2) {
+                nextNode = retrieveNextnode(nextNode, transitionMatrix);
+            }
 
-    
-
-    // Conditional to check if a car should low the speed
-    if(dist < 100 && trafficLight1[1][0] == 2) {
-
-        if(find(trafficLight1[0].begin(), trafficLight1[0].end(), nextNode) != trafficLight1[0].end()){
-            Position[0] += Direction[0] * (speed / 2);
-            Position[2] += Direction[2] * (speed / 2);
+        } else {
+            nextNode = retrieveNextnode(nextNode, transitionMatrix);
         }
 
     }
