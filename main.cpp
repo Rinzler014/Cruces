@@ -90,10 +90,11 @@ int crosses2 = 0;
 // Cars vector
 vector<void *> objects(NUM_OBJ);
 
-//Compares cars array
+// Car comparator array
 int CarComp[NUM_OBJ][NUM_OBJ];
 
-int compCarICarK = 1;//variabel que se usa para ver si hay una colision en i j
+// Variable to check the collision between car i and j
+int compCarICarK = 1;
 
 // File name of the map texture
 const char* filename0 = "map.bmp";
@@ -281,17 +282,6 @@ void PopulateTMatrix(){
   TransitionMatrix[32][30] = 1;
   TransitionMatrix[33][25] = 1; 
 	
-  /*
-
-	cout << "Traffic Transition Matrix with 24 nodes" << endl;
-	  for (int i = 0; i < 24; i++){
-	    for (int j = 0; j < 24; j++){
-	      cout << TransitionMatrix[i][j] << " ";
-	    }
-	    cout << "\n" << endl;
-	  }
-  
-  */
 }
 
 // Function to draw a character in the screen
@@ -351,7 +341,6 @@ void display() {
     glEnd();
 	glDisable(GL_TEXTURE_2D);
 
-
   // Draw the traffic lights
   TrafficLight(lightColors[0], trafficLightsPos, 0);
   TrafficLight(lightColors[1], trafficLightsPos, 1);
@@ -368,13 +357,12 @@ void display() {
   // Draw and update the objects 
   for (int i = 0; i < NUM_OBJ; i++){
 
-    
-
     for(int j = 0; j < NUM_OBJ; j++){//Actualiza si hay colision
       
       if(i != j){
-          if ( ((Cubo*)objects[i])->getininopde() == ((Cubo*)objects[j])->getininopde() )
-          {
+
+          if ( ((Cubo*)objects[i])->getininopde() == ((Cubo*)objects[j])->getininopde() ) {
+
               float carDist = distance(((Cubo*)objects[i])->getX(), ((Cubo*)objects[i])->getZ(), ((Cubo*)objects[j])->getX(), ((Cubo*)objects[j])->getZ());
               float radios = sumRadio(((Cubo*)objects[i])->getRadio(), ((Cubo*)objects[j])->getRadio()) + 2;
 
@@ -384,18 +372,14 @@ void display() {
                   float dist2nodeCar2 = distance(((Cubo*)objects[j])->getX(), ((Cubo*)objects[j])->getZ(), locNodos[AiNextNode[j]][0], locNodos[AiNextNode[j]][0]);
 
                   if (dist2nodeCar <= dist2nodeCar2) {
-                  //if ( ((Cubo*)objects[i])->getidn() > ((Cubo*)objects[j])->getidn() ){
-                      //AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], speed);
                       CarComp[i][j] = 1;
                   }
                   else {
-                      //AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], 0);
                       CarComp[i][j] = 0;
                   }
 
               }
               else {
-                  //AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], speed);
                   CarComp[i][j] = 1;
               }
           }
@@ -444,8 +428,6 @@ void display() {
 
   }
 
-  //cout << time_ << endl;
-
   if(time_ == 10000) {
     
     for (int i = 0; i < NUM_OBJ; i++){
@@ -481,8 +463,6 @@ int main(int argc, char **argv) {
   PopulateLocNodes();
   PopulateTMatrix();
 
-
-
   // Assign Speed to the objects
   speed = 1;
 
@@ -495,7 +475,5 @@ int main(int argc, char **argv) {
   glutDisplayFunc(display);
   glutIdleFunc(idle);
   glutMainLoop();
-
-  cout << "Holaaaa";
 
 }

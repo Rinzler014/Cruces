@@ -159,11 +159,9 @@ int Cubo::update(vector<vector<float>> locNodos, vector<vector<int>> trafficLigh
                 
                 if(nextNode == 16 || nextNode == 17){
                     trafficLight1Crosses++;
-                    cout << "S1: " << trafficLight1Crosses << " veces" << endl;
                 }
                 if(nextNode == 18 || nextNode == 19){
                     trafficLight2Crosses++;
-                    cout << "S2: " << trafficLight2Crosses << " veces" << endl;
                 }
             }
 
@@ -181,11 +179,9 @@ int Cubo::update(vector<vector<float>> locNodos, vector<vector<int>> trafficLigh
                 
                 if(nextNode == 16 || nextNode == 17){
                     trafficLight1Crosses++;
-                    //cout << "S1: " << trafficLight1Crosses << " veces" << endl;
                 }
                 if(nextNode == 18 || nextNode == 19){
                     trafficLight2Crosses++;
-                    //cout << "S2: " << trafficLight2Crosses << " veces" << endl;
                 }
             }
         }
@@ -195,11 +191,9 @@ int Cubo::update(vector<vector<float>> locNodos, vector<vector<int>> trafficLigh
             
             if(nextNode == 16 || nextNode == 17){
                 trafficLight1Crosses++;
-                //cout << "S1: " << trafficLight1Crosses << " veces" << endl;
             }
             if(nextNode == 18 || nextNode == 19){
                 trafficLight2Crosses++;
-                //cout << "S2: " << trafficLight2Crosses << " veces" << endl;
             }
         }
 
@@ -208,7 +202,7 @@ int Cubo::update(vector<vector<float>> locNodos, vector<vector<int>> trafficLigh
     // Make the car move on the road
     Position[0] += Direction[0] * speed;
     Position[2] += Direction[2] * speed;
-    //cout << "idn: "<<idn << " nenode " << nextNode << " posx " << Position[0] << " posy" << Position[1] << endl;
+    
     nnode = nextNode;
     return nextNode;
 
