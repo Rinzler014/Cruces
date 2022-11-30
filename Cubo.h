@@ -15,6 +15,8 @@ class Cubo {
     public:
 
         int idn;
+        int trafficLight1Crosses;
+        int trafficLight2Crosses;
 
         Cubo(int,int, float, vector<vector<float>> );
         ~Cubo();
@@ -48,6 +50,8 @@ class Cubo {
 
         float Position[3] = {0.0, 5.0, 0.0};
         float Direction[3] = {0.0, 5.0, 0.0};
+
+        
 
         int radio;
         int nnode;

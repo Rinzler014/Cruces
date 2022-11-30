@@ -8,19 +8,25 @@
 #include <stdlib.h>
 #include <random>
 #include <iomanip>
+#include <iostream>
 #include <string>
+
+#include <chrono>
+#include <ctime>
 
 #include "Cubo.h"
 
 #include "RgbImage.h"
 
-#define NUM_OBJ 20
+#define NUM_OBJ 2
 #define NUM_NODES 35
 
 #define NTextures 1
 GLuint	texture[NTextures];
 
 using namespace std;
+
+int time_ = 0;
 
 // Global variables
 // Screen dimension constants
@@ -74,8 +80,12 @@ vector<vector<float>> locNodos(NUM_NODES, vector<float>(2, 0));
 vector<vector<int>> TransitionMatrix(NUM_NODES * 2, vector<int>(NUM_NODES * 2, 0));
 
 // Nodes connections with traffic lights
-vector<vector<int>> trafficLight1 = {{18, 15}, {0}};
+vector<vector<int>> trafficLight1 = {{18, 19}, {0}};
 vector<vector<int>> trafficLight2 = {{16, 17}, {0}};
+
+int crosses1 = 0;
+int crosses2 = 0;
+
 
 // Cars vector
 vector<void *> objects(NUM_OBJ);
@@ -360,7 +370,7 @@ void display() {
       if(i != j){
 
         float carDist = distance(((Cubo *)objects[i])->getX(), ((Cubo *)objects[i])->getZ(), ((Cubo *)objects[j])->getX(), ((Cubo *)objects[j])->getZ() );
-        float radios = sumRadio(((Cubo *)objects[i])->getRadio(), ((Cubo *)objects[j])->getRadio()) + 200;
+        float radios = sumRadio(((Cubo *)objects[i])->getRadio(), ((Cubo *)objects[j])->getRadio()) + 2;
 
         if(carDist < radios) {
 
@@ -369,7 +379,6 @@ void display() {
 
           if(dist2nodeCar < dist2nodeCar2){
             AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], speed);
-            cout << "Cubo: " << i << " Nodo: " << AiNextNode[i] << endl;
           } else {
             AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], -speed);
           }
@@ -378,19 +387,35 @@ void display() {
           AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], speed);
         }
 
-      } 
+      }
 
     }
-  
     
+  }
+
+  cout << time_ << endl;
+
+  if(time_ == 10000) {
+    
+    for (int i = 0; i < NUM_OBJ; i++){
+      crosses1 += ((Cubo *)objects[i])->trafficLight1Crosses;
+      crosses2 += ((Cubo *)objects[i])->trafficLight2Crosses;
+    }
+
+    cout << "Traffic Light 1 crosses: " << crosses1 << endl;
+    cout << "Traffic Light 2 crosses: " << crosses2 << endl;
+
+    exit(0);
 
   }
 
-  //
+
 
   // Release the buffer to screen
   glutSwapBuffers();
   Sleep(5);
+
+  time_++;
 
 }
 
@@ -405,6 +430,8 @@ int main(int argc, char **argv) {
   PopulateLocNodes();
   PopulateTMatrix();
 
+
+
   // Assign Speed to the objects
   speed = 1;
 
@@ -417,5 +444,7 @@ int main(int argc, char **argv) {
   glutDisplayFunc(display);
   glutIdleFunc(idle);
   glutMainLoop();
+
+  cout << "Holaaaa";
 
 }

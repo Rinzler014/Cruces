@@ -3,6 +3,7 @@
 
 const int NUMNODES = 35;
 
+
 using namespace std;
 
 
@@ -38,6 +39,9 @@ Cubo::Cubo(int dim_x,int dim_z, float speed, vector<vector<float>> locNodos) {
     cout << Direction[0] << endl;
     cout << Direction[2] << endl;
 
+    trafficLight1Crosses = 0;
+    trafficLight2Crosses = 0;
+
     radio = sqrt(3 * (10 * 10));
 
 }
@@ -50,7 +54,7 @@ void Cubo::draw() {
 
     glPushMatrix();
     glTranslatef(Position[0], Position[1], Position[2]);
-    glScaled(10,10,10);
+    glScaled(7,7,7);
     //The cube is drawn
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
@@ -129,14 +133,11 @@ int Cubo::update(vector<vector<float>> locNodos, vector<vector<int>> trafficLigh
     float dist = dist2node(Position, nextNode, locNodos);
 
     // Conditional to check if a car should low the speed
-    if(dist < 100 && trafficLight1[1][0] == 1) {
+    if(dist < 100 && trafficLight1[1][0] == 1 || trafficLight2[1][0] == 1) {
 
-        if(find(trafficLight1[0].begin(), trafficLight1[0].end(), nextNode) != trafficLight1[0].end()){
+        if((find(trafficLight1[0].begin(), trafficLight1[0].end(), nextNode) != trafficLight1[0].end()) || (find(trafficLight2[0].begin(), trafficLight2[0].end(), nextNode) != trafficLight2[0].end())){
             Position[0] -= Direction[0] * (speed / 2);
             Position[2] -= Direction[2] * (speed / 2);
-
-            cout << Direction[0] << endl;
-            cout << Direction[2] << endl;
 
         }
 
@@ -145,19 +146,60 @@ int Cubo::update(vector<vector<float>> locNodos, vector<vector<int>> trafficLigh
     // Condition to check if the car is in the intersection
     if(dist < 5){
 
-        if(find(trafficLight1[0].begin(), trafficLight1[0].end(), nextNode) != trafficLight1[0].end() && (trafficLight1[1][0] == 0 ||trafficLight1[1][0] == 2)){
+        if((find(trafficLight1[0].begin(), trafficLight1[0].end(), nextNode) != trafficLight1[0].end() && (trafficLight1[1][0] == 0 ||trafficLight1[1][0] == 2))){
 
-            if(trafficLight1[1][0] == 0){
+            if((trafficLight1[1][0] == 0)){
                 Position[0] += Direction[0] * 0;
                 Position[2] += Direction[2] * 0;    
             }
 
-            if(trafficLight1[1][0] == 2) {
+            if((trafficLight1[1][0] == 2)) {
                 nextNode = retrieveNextnode(nextNode, transitionMatrix);
+                
+                if(nextNode == 16 || nextNode == 17){
+                    trafficLight1Crosses++;
+                    cout << "S1: " << trafficLight1Crosses << " veces" << endl;
+                }
+                if(nextNode == 18 || nextNode == 19){
+                    trafficLight2Crosses++;
+                    cout << "S2: " << trafficLight2Crosses << " veces" << endl;
+                }
             }
 
-        } else {
+    } 
+        
+        else if(find(trafficLight2[0].begin(), trafficLight2[0].end(), nextNode) != trafficLight2[0].end() && (trafficLight2[1][0] == 0 ||trafficLight2[1][0] == 2)) {
+           
+           if(trafficLight2[1][0] == 0){
+                Position[0] += Direction[0] * 0;
+                Position[2] += Direction[2] * 0;    
+            }
+
+            if((trafficLight2[1][0] == 2)) {
+                nextNode = retrieveNextnode(nextNode, transitionMatrix);
+                
+                if(nextNode == 16 || nextNode == 17){
+                    trafficLight1Crosses++;
+                    cout << "S1: " << trafficLight1Crosses << " veces" << endl;
+                }
+                if(nextNode == 18 || nextNode == 19){
+                    trafficLight2Crosses++;
+                    cout << "S2: " << trafficLight2Crosses << " veces" << endl;
+                }
+            }
+        }
+        
+        else {
             nextNode = retrieveNextnode(nextNode, transitionMatrix);
+            
+            if(nextNode == 16 || nextNode == 17){
+                trafficLight1Crosses++;
+                cout << "S1: " << trafficLight1Crosses << " veces" << endl;
+            }
+            if(nextNode == 18 || nextNode == 19){
+                trafficLight2Crosses++;
+                cout << "S2: " << trafficLight2Crosses << " veces" << endl;
+            }
         }
 
     }
