@@ -18,7 +18,7 @@
 
 #include "RgbImage.h"
 
-#define NUM_OBJ 2
+#define NUM_OBJ 15
 #define NUM_NODES 35
 
 #define NTextures 1
@@ -64,7 +64,7 @@ int LightCTRL = 0;
 
 // Control variables of each agent
 vector<int> AiNextNode(NUM_OBJ);
-float speed = 0.5;
+float speed = 1;
 
 // Traffic light positions
 vector<vector<float>> trafficLightsPos = {{-72, -68}, 
@@ -89,6 +89,11 @@ int crosses2 = 0;
 
 // Cars vector
 vector<void *> objects(NUM_OBJ);
+
+//Compares cars array
+int CarComp[NUM_OBJ][NUM_OBJ];
+
+int compCarICarK = 1;//variabel que se usa para ver si hay una colision en i j
 
 // File name of the map texture
 const char* filename0 = "map.bmp";
@@ -184,7 +189,7 @@ void PopulateLocNodes(){
 	
   locNodos[0][0] = -419;locNodos[0][1] = -266;
   locNodos[1][0] = -382;locNodos[1][1] = -234;
-  locNodos[2][0] = -142;locNodos[2][1] = -267;
+  locNodos[2][0] = -144;locNodos[2][1] = -267;
   locNodos[3][0] = -143;locNodos[3][1] = -236;
   locNodos[4][0] = -92;locNodos[4][1] = -266;
   locNodos[5][0] = -92;locNodos[5][1] = -234;
@@ -321,7 +326,7 @@ void drawString(int x, int y, int z, const char* text) {
   loadTextureFromFile(filename0, 0);
 
   for (int i = 0; i < NUM_OBJ; i++){
-    objects[i] = new Cubo(DimBoard_X, DimBoard_Z, speed, locNodos);
+    objects[i] = new Cubo(DimBoard_X, DimBoard_Z, speed, locNodos, i);
     AiNextNode[i] = ((Cubo*)objects[i])->getininopde();
   }
 
@@ -363,37 +368,83 @@ void display() {
   // Draw and update the objects 
   for (int i = 0; i < NUM_OBJ; i++){
 
-    ((Cubo *)objects[i])->draw();
+    
 
-    for(int j = 0; j < NUM_OBJ; j++){
+    for(int j = 0; j < NUM_OBJ; j++){//Actualiza si hay colision
       
       if(i != j){
+          if ( ((Cubo*)objects[i])->getininopde() == ((Cubo*)objects[j])->getininopde() )
+          {
+              float carDist = distance(((Cubo*)objects[i])->getX(), ((Cubo*)objects[i])->getZ(), ((Cubo*)objects[j])->getX(), ((Cubo*)objects[j])->getZ());
+              float radios = sumRadio(((Cubo*)objects[i])->getRadio(), ((Cubo*)objects[j])->getRadio()) + 2;
 
-        float carDist = distance(((Cubo *)objects[i])->getX(), ((Cubo *)objects[i])->getZ(), ((Cubo *)objects[j])->getX(), ((Cubo *)objects[j])->getZ() );
-        float radios = sumRadio(((Cubo *)objects[i])->getRadio(), ((Cubo *)objects[j])->getRadio()) + 2;
+              if (carDist < radios) {
 
-        if(carDist < radios) {
+                  float dist2nodeCar = distance(((Cubo*)objects[i])->getX(), ((Cubo*)objects[i])->getZ(), locNodos[AiNextNode[i]][0], locNodos[AiNextNode[i]][0]);
+                  float dist2nodeCar2 = distance(((Cubo*)objects[j])->getX(), ((Cubo*)objects[j])->getZ(), locNodos[AiNextNode[j]][0], locNodos[AiNextNode[j]][0]);
 
-          float dist2nodeCar = distance(((Cubo *)objects[i])->getX(), ((Cubo *)objects[i])->getZ(), locNodos[AiNextNode[i]][0], locNodos[AiNextNode[i]][0]);
-          float dist2nodeCar2 = distance(((Cubo *)objects[j])->getX(), ((Cubo *)objects[j])->getZ(), locNodos[AiNextNode[j]][0], locNodos[AiNextNode[j]][0]);
+                  //if (dist2nodeCar < dist2nodeCar2) {
+                  if ( ((Cubo*)objects[i])->getidn() > ((Cubo*)objects[j])->getidn() ){
+                      //AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], speed);
+                      CarComp[i][j] = 1;
+                  }
+                  else {
+                      //AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], 0);
+                      CarComp[i][j] = 0;
+                  }
 
-          if(dist2nodeCar < dist2nodeCar2){
-            AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], speed);
-          } else {
-            AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], -speed);
+              }
+              else {
+                  //AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], speed);
+                  CarComp[i][j] = 1;
+              }
           }
-          
-        } else {
-          AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], speed);
-        }
+          else
+          {
+              CarComp[i][j] = 1;
+          }
 
+        
+
+      }
+      else
+      {
+          CarComp[i][j] = 1;
       }
 
     }
     
   }
 
-  cout << time_ << endl;
+  for (int i = 0; i < NUM_OBJ; i++)
+  {
+      compCarICarK = 1;
+      for (int k = 0; k < NUM_OBJ; k++)
+      {
+          if (i==k)
+          {
+              continue;
+          }
+          if (CarComp[i][k]==0)
+          {
+              compCarICarK = 0;
+          }
+      }
+
+      ((Cubo*)objects[i])->draw();
+      if (compCarICarK == 0)
+      {
+          //cout << "colision" << i << endl;
+          AiNextNode[i] = ((Cubo*)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], 0);
+      }
+      else
+      {
+          AiNextNode[i] = ((Cubo*)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], speed);
+      }
+
+  }
+
+  //cout << time_ << endl;
 
   if(time_ == 10000) {
     

@@ -18,7 +18,7 @@ class Cubo {
         int trafficLight1Crosses;
         int trafficLight2Crosses;
 
-        Cubo(int,int, float, vector<vector<float>> );
+        Cubo(int,int, float, vector<vector<float>>, int );
         ~Cubo();
         
         void draw();
