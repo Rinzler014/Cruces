@@ -18,7 +18,7 @@
 
 #include "RgbImage.h"
 
-#define NUM_OBJ 15
+#define NUM_OBJ 20
 #define NUM_NODES 35
 
 #define NTextures 1
@@ -59,7 +59,7 @@ int DimBoard_X = 450;
 int DimBoard_Z = 300;
 
 // Ligther control
-vector<int> lightColors = {0, 1};
+vector<int> lightColors = {0, 0};
 int LightCTRL = 0;
 
 // Control variables of each agent

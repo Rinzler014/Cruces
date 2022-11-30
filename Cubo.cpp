@@ -1,4 +1,5 @@
 #include "Cubo.h"
+#include <bits/stdc++.h>
 
 const int NUMNODES = 35;
 
