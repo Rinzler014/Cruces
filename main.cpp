@@ -14,7 +14,7 @@
 
 #include "RgbImage.h"
 
-#define NUM_OBJ 7
+#define NUM_OBJ 20
 #define NUM_NODES 35
 
 #define NTextures 1
@@ -148,7 +148,7 @@ void TrafficLight(int lightcolor, vector<vector<float>> trafficLightsPos, int tr
 // Function to control the traffic light color
 vector<int> LightControl(int &lightCTRL){
   
-  if(lightCTRL==10000){
+  if(lightCTRL==500){
     lightCTRL=0;
     lightColors[0]++;
     lightColors[1]++;
@@ -354,38 +354,31 @@ void display() {
   for (int i = 0; i < NUM_OBJ; i++){
 
     ((Cubo *)objects[i])->draw();
-    cout << "Agente: " << i << " Nodo: " << AiNextNode[i] << endl << endl;
 
     for(int j = 0; j < NUM_OBJ; j++){
       
-      if(i == j){
-        continue;
-
-      } 
-      else {
+      if(i != j){
 
         float carDist = distance(((Cubo *)objects[i])->getX(), ((Cubo *)objects[i])->getZ(), ((Cubo *)objects[j])->getX(), ((Cubo *)objects[j])->getZ() );
-        float radios = sumRadio(((Cubo *)objects[i])->getRadio(), ((Cubo *)objects[j])->getRadio()) + 2;
+        float radios = sumRadio(((Cubo *)objects[i])->getRadio(), ((Cubo *)objects[j])->getRadio()) + 200;
 
         if(carDist < radios) {
 
           float dist2nodeCar = distance(((Cubo *)objects[i])->getX(), ((Cubo *)objects[i])->getZ(), locNodos[AiNextNode[i]][0], locNodos[AiNextNode[i]][0]);
           float dist2nodeCar2 = distance(((Cubo *)objects[j])->getX(), ((Cubo *)objects[j])->getZ(), locNodos[AiNextNode[j]][0], locNodos[AiNextNode[j]][0]);
 
-          cout << "Distancia carro 1: " << dist2nodeCar << endl;
-          cout << "Distancia carro 2: " << dist2nodeCar2 << endl;
-
           if(dist2nodeCar < dist2nodeCar2){
             AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], speed);
+            cout << "Cubo: " << i << " Nodo: " << AiNextNode[i] << endl;
           } else {
-            AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], 0);
+            AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], -speed);
           }
           
         } else {
           AiNextNode[i] = ((Cubo *)objects[i])->update(locNodos, trafficLight1, trafficLight2, TransitionMatrix, AiNextNode[i], speed);
         }
 
-      }
+      } 
 
     }
   

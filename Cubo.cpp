@@ -128,9 +128,6 @@ int Cubo::update(vector<vector<float>> locNodos, vector<vector<int>> trafficLigh
     NodeDirection(nextNode, locNodos, Direction, Position);
     float dist = dist2node(Position, nextNode, locNodos);
 
-    cout << "Semaforo 1: " << trafficLight1[1][0] << endl;
-    cout << "Semaforo 2: " << trafficLight2[1][0] << endl;
-
     // Conditional to check if a car should low the speed
     if(dist < 100 && trafficLight1[1][0] == 1) {
 
