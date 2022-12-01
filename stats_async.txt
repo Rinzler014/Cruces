@@ -1,0 +1,82 @@
+
+Traffic Light 1 crosses: 113
+Traffic Light 2 crosses: 115 
+Objects Num: 22
+
+Traffic Light 1 crosses: 89
+Traffic Light 2 crosses: 81 
+Objects Num: 23
+
+Traffic Light 1 crosses: 102
+Traffic Light 2 crosses: 96 
+Objects Num: 24
+
+Traffic Light 1 crosses: 101
+Traffic Light 2 crosses: 85 
+Objects Num: 25
+
+Traffic Light 1 crosses: 82
+Traffic Light 2 crosses: 88 
+Objects Num: 26
+
+Traffic Light 1 crosses: 91
+Traffic Light 2 crosses: 86 
+Objects Num: 25
+
+Traffic Light 1 crosses: 82
+Traffic Light 2 crosses: 85 
+Objects Num: 23
+
+Traffic Light 1 crosses: 90
+Traffic Light 2 crosses: 78 
+Objects Num: 29
+
+Traffic Light 1 crosses: 114
+Traffic Light 2 crosses: 98 
+Objects Num: 34
+
+Traffic Light 1 crosses: 100
+Traffic Light 2 crosses: 69 
+Objects Num: 27
+
+Traffic Light 1 crosses: 95
+Traffic Light 2 crosses: 78 
+Objects Num: 25
+
+Traffic Light 1 crosses: 87
+Traffic Light 2 crosses: 81 
+Objects Num: 21
+
+Traffic Light 1 crosses: 80
+Traffic Light 2 crosses: 84 
+Objects Num: 21
+
+Traffic Light 1 crosses: 93
+Traffic Light 2 crosses: 100 
+Objects Num: 24
+
+Traffic Light 1 crosses: 91
+Traffic Light 2 crosses: 89 
+Objects Num: 26
+
+Traffic Light 1 crosses: 99
+Traffic Light 2 crosses: 85 
+Objects Num: 23
+
+Traffic Light 1 crosses: 98
+Traffic Light 2 crosses: 111 
+Objects Num: 26
+
+Traffic Light 1 crosses: 74
+Traffic Light 2 crosses: 85 
+Objects Num: 29
+
+Traffic Light 1 crosses: 86
+Traffic Light 2 crosses: 91 
+Objects Num: 22
+
+Traffic Light 1 crosses: 103
+Traffic Light 2 crosses: 97 
+Objects Num: 23
+
+

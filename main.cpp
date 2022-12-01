@@ -19,7 +19,7 @@
 
 #include "RgbImage.h"
 
-#define NUM_OBJ 24
+#define NUM_OBJ 27
 #define NUM_NODES 35
 
 #define NTextures 1
@@ -62,7 +62,7 @@ int DimBoard_X = 450;
 int DimBoard_Z = 300;
 
 // Ligther control
-vector<int> lightColors = {0, 0};
+vector<int> lightColors = {0, 1};
 int LightCTRL = 0;
 
 // Control variables of each agent
@@ -441,7 +441,7 @@ void display() {
 
     ofstream stats;
 
-    stats.open("stats.txt", std::ios_base::app);
+    stats.open("stats_async.txt", std::ios_base::app);
     stats << endl;
     stats << "Traffic Light 1 crosses: " << crosses1 << endl;
     stats << "Traffic Light 2 crosses: " << crosses2 << " Objects Num: "  << NUM_OBJ << endl; 
